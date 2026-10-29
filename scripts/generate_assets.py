@@ -13,6 +13,7 @@ from cartoon import (BLUE, COMIC, INK, MONO, RED, ROOT, THEMES, WHITE, YELLOW, b
                      mascot, mini_spider, pill, shadow_box, style)
 
 OUT = ROOT / "assets"
+BODY = "'Trebuchet MS', Verdana, sans-serif"
 
 
 def sunburst(cx, cy, color, n=22, r=1200):
@@ -251,6 +252,47 @@ TEAMS = [
 ]
 
 
+def fact_panel(mode, n, question, answer, color):
+    """Comic panel: question in a caption box, Webby answering in a speech bubble."""
+    t = THEMES[mode]
+    lines = textwrap.wrap(answer, 27)[:6]
+    top = 150 - len(lines) * 11
+    text = "".join(
+        f'<text x="290" y="{top + i * 22}" text-anchor="middle" font-family="{BODY}" '
+        f'font-size="15" font-weight="bold" fill="{INK}">{escape(l)}</text>'
+        for i, l in enumerate(lines))
+    bubble = "M176,74 Q176,58 192,58 L404,58 Q420,58 420,74 L420,226 Q420,242 404,242 L192,242 Q176,242 176,226 L176,170 L148,184 L176,146 Z"
+    return f'''<svg xmlns="http://www.w3.org/2000/svg" width="440" height="270" viewBox="0 0 440 270" role="img" aria-label="{escape(question)} {escape(answer)}">
+{style(".bob { animation: bob 2.4s ease-in-out infinite alternate; }",
+       f"@keyframes bob {{ from {{ transform: translate(80px, 170px) scale(.62) rotate(-4deg); }} to {{ transform: translate(80px, 180px) scale(.62) rotate(4deg); }} }}")}
+<defs>
+  <clipPath id="c"><rect x="6" y="6" width="420" height="246" rx="22"/></clipPath>
+  <pattern id="d" width="12" height="12" patternUnits="userSpaceOnUse"><circle cx="6" cy="6" r="2" fill="{RED}" opacity="0.3"/></pattern>
+</defs>
+{shadow_box(6, 6, 420, 246, t["panel"], r=22, off=9, sw=5)}
+<g clip-path="url(#c)">
+  <rect x="6" y="6" width="420" height="246" fill="url(#d)"/>
+  <g class="bob">{mascot(t["thread"], thread_len=300)}</g>
+</g>
+<rect x="6" y="6" width="420" height="246" rx="22" fill="none" stroke="{INK}" stroke-width="5"/>
+<g transform="rotate(-2 120 30)">{shadow_box(18, 14, 26 + 12.5 * len(question), 38, color, r=8, off=4, sw=4)}
+<text x="{31 + 6.25 * len(question):.0f}" y="41" text-anchor="middle" font-family="{COMIC}" font-size="23" letter-spacing="1" fill="{INK}">{escape(question.upper())}</text></g>
+<path d="{bubble}" fill="{INK}" transform="translate(6 6)"/>
+<path d="{bubble}" fill="{WHITE}" stroke="{INK}" stroke-width="4.5" stroke-linejoin="round"/>
+{text}
+<text x="404" y="18" text-anchor="end" font-family="{COMIC}" font-size="16" fill="{t["muted"]}">#{n}</text>
+</svg>'''
+
+
+FACTS = [
+    ("Favourite language?", "Can't pick just one. Every language is a new universe, and each one hands me a new superpower.", YELLOW),
+    ("Proudest project?", "The one fighting back right now. Every project throws a new villain at me, and I swing out with fresh ideas and sharper skills.", BLUE),
+    ("Currently learning?", "Everything the world is willing to teach me. The syllabus never ends, and that's the fun part.", RED),
+    ("Off the keyboard?", "Smashing boundaries on the cricket pitch, or lost in a playlist with the volume all the way up.", YELLOW),
+    ("Fave Spider-Verse moment?", "Miles deciding he's gonna do his own thing. That's exactly the energy I bring to every line of code.", BLUE),
+]
+
+
 MISSIONS = [
     ("01", "Ember", "My current main build. Fresh repo, the story is still being written.", ["JavaScript"], None),
     ("02", "Web Automations", "Test automation framework for a banking web application.", ["Java", "Selenium"], None),
@@ -270,6 +312,7 @@ CAPTIONS = {
     "classified": "CLASSIFIED FILES",
     "teams": "TEAM-UPS",
     "web": "THE WEB I'VE SPUN",
+    "facts": "ENTER THE SPIDER-VERSE",
     "contact": "SIGNAL THE SPIDER",
 }
 
@@ -278,11 +321,14 @@ def main():
     (OUT / "cards").mkdir(parents=True, exist_ok=True)
     (OUT / "captions").mkdir(parents=True, exist_ok=True)
     (OUT / "teams").mkdir(parents=True, exist_ok=True)
+    (OUT / "facts").mkdir(parents=True, exist_ok=True)
     for mode in THEMES:
         (OUT / f"banner-{mode}.svg").write_text(banner(mode), encoding="utf-8")
         (OUT / f"divider-{mode}.svg").write_text(divider(mode), encoding="utf-8")
         for issue, title, desc, tags, status in MISSIONS:
             (OUT / "cards" / f"{issue}-{mode}.svg").write_text(card(mode, issue, title, desc, tags, status), encoding="utf-8")
+        for n, (question, answer, color) in enumerate(FACTS, 1):
+            (OUT / "facts" / f"{n:02}-{mode}.svg").write_text(fact_panel(mode, f"{n:02}", question, answer, color), encoding="utf-8")
         for slug, title, role, desc, tags, current in TEAMS:
             (OUT / "teams" / f"{slug}-{mode}.svg").write_text(team_card(mode, slug, title, role, desc, tags, current), encoding="utf-8")
     for i, (key, text) in enumerate(CAPTIONS.items()):

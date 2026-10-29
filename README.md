@@ -97,17 +97,15 @@ const rizlan = {
   <img alt="Contribution graph with a spider swinging across it" src="https://raw.githubusercontent.com/Ahd-Rizlan/Ahd-Rizlan/output/spider-light.svg" width="100%">
 </picture>
 
-<details>
-  <summary><b>Enter the Spider-Verse</b> (fun facts)</summary>
-  <br>
+<img alt="Enter the Spider-Verse" src="assets/captions/facts.svg" height="64">
 
-  - **Favourite language?** Can't pick just one. Every language is a new universe, and each one hands me a new superpower.
-  - **Proudest project?** The one fighting back right now. Every project throws a new villain at me, and I swing out with fresh ideas and sharper skills.
-  - **Currently learning?** Everything the world is willing to teach me. The syllabus never ends, and that's the fun part.
-  - **Off the keyboard?** Smashing boundaries on the cricket pitch, or lost in a playlist with the volume all the way up.
-  - **Favourite Spider-Verse moment?** Miles deciding he's gonna do his own thing. That's exactly the energy I bring to every line of code.
-
-</details>
+<p align="center">
+  <picture><source media="(prefers-color-scheme: dark)" srcset="assets/facts/01-dark.svg"><img alt="Favourite language? Can&#39;t pick just one. Every language is a new universe, and each one hands me a new superpower." src="assets/facts/01-light.svg" width="49%"></picture>
+  <picture><source media="(prefers-color-scheme: dark)" srcset="assets/facts/02-dark.svg"><img alt="Proudest project? The one fighting back right now. Every project throws a new villain at me, and I swing out with fresh ideas and sharper skills." src="assets/facts/02-light.svg" width="49%"></picture>
+  <picture><source media="(prefers-color-scheme: dark)" srcset="assets/facts/03-dark.svg"><img alt="Currently learning? Everything the world is willing to teach me. The syllabus never ends, and that&#39;s the fun part." src="assets/facts/03-light.svg" width="49%"></picture>
+  <picture><source media="(prefers-color-scheme: dark)" srcset="assets/facts/04-dark.svg"><img alt="Off the keyboard? Smashing boundaries on the cricket pitch, or lost in a playlist with the volume all the way up." src="assets/facts/04-light.svg" width="49%"></picture>
+  <picture><source media="(prefers-color-scheme: dark)" srcset="assets/facts/05-dark.svg"><img alt="Favourite Spider-Verse moment? Miles deciding he&#39;s gonna do his own thing. That&#39;s exactly the energy I bring to every line of code." src="assets/facts/05-light.svg" width="49%"></picture>
+</p>
 
 <img alt="Signal the spider" src="assets/captions/contact.svg" height="64">
 

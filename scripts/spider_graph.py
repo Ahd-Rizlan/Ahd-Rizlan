@@ -83,7 +83,7 @@ def render(mode, total, weeks):
 <defs><clipPath id="f"><rect x="6" y="6" width="{width - 22}" height="{height - 22}" rx="24"/></clipPath></defs>
 {shadow_box(6, 6, width - 22, height - 22, t["panel"], r=24, off=9, sw=5)}
 <g clip-path="url(#f)">
-{comic_text(LEFT, 52, f"{total:,} CONTRIBUTIONS IN THE LAST YEAR", 30, t["fg"] if mode == "light" else "#FFE14D", shadow=INK, off=3, sw=6)}
+{comic_text(LEFT, 52, f"{total:,} CONTRIBUTIONS IN THE LAST YEAR", 30, "#E23636" if mode == "light" else "#FFE14D", shadow=INK, off=3, sw=6)}
 {"".join(cells)}
 <path class="web" d="{path}" fill="none" stroke="{t["thread"]}" stroke-width="2.5" stroke-linecap="round" opacity="0.6"/>
 <g id="rider"><g transform="scale(0.9)">{mini_spider()}</g><animateMotion dur="{DURATION}s" repeatCount="indefinite" path="{path}"/></g>
