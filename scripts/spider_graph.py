@@ -15,14 +15,13 @@ OUT = Path(os.environ.get("OUT_DIR", "dist"))
 QUERY = """query($login:String!){user(login:$login){contributionsCollection{contributionCalendar{
   totalContributions weeks{contributionDays{contributionCount weekday}}}}}}"""
 
+from cartoon import BLUE, INK, THEMES as BASE, comic_text, mini_spider, shadow_box, style
+
 THEMES = {
-    "dark": {"empty": "#161B22", "levels": ["#4A1216", "#8C1D23", "#C42A30", "#E23636"],
-             "text": "#9FB3C8", "web": "#FFFFFF"},
-    "light": {"empty": "#EBE6DA", "levels": ["#F7C1C1", "#F09595", "#E24B4A", "#A32D2D"],
-              "text": "#4A5560", "web": "#0B0B0B"},
+    "dark": {**BASE["dark"], "empty": "#2E2760", "levels": ["#7A2A3A", "#B0303A", "#E23636", "#FF6B6B"]},
+    "light": {**BASE["light"], "empty": "#F1E8CF", "levels": ["#F7C1C1", "#F09595", "#E24B4A", "#A32D2D"]},
 }
-BLUE = "#00D4FF"
-CELL, GAP, LEFT, TOP = 13, 4, 20, 70
+CELL, GAP, LEFT, TOP = 14, 4, 40, 112
 DURATION = 14  # seconds per swing across the whole graph
 
 
@@ -47,7 +46,7 @@ def swing_path(cols, width):
     x0 = LEFT - 10
     d = [f"M{x0},{TOP - 40}"]
     x = x0
-    while x < width:
+    while x < width - LEFT - step * (CELL + GAP):
         nx = x + step * (CELL + GAP)
         cx = (x + nx) / 2
         d.append(f"Q{cx:.0f},{TOP + 7 * (CELL + GAP) + 30} {nx:.0f},{TOP - 40}")
@@ -55,24 +54,11 @@ def swing_path(cols, width):
     return " ".join(d)
 
 
-SPIDER = f'''<g id="spider">
-  <g stroke="#0B0B0B" stroke-width="2" fill="none" stroke-linecap="round">
-    <path d="M-4,-2 l-9,-7 l-4,6"/><path d="M-4,1 l-11,-1 l-4,7"/>
-    <path d="M-4,3 l-9,6 l-2,7"/><path d="M-3,5 l-6,9 l1,6"/>
-    <path d="M4,-2 l9,-7 l4,6"/><path d="M4,1 l11,-1 l4,7"/>
-    <path d="M4,3 l9,6 l2,7"/><path d="M3,5 l6,9 l-1,6"/>
-  </g>
-  <ellipse cx="0" cy="2" rx="7" ry="9" fill="#E23636" stroke="#0B0B0B" stroke-width="2"/>
-  <path d="M-4,0 l3,2 l-4,1 z M4,0 l-3,2 l4,1 z" fill="#FFFFFF"/>
-  <path d="M0,-6 v16 M-6,3 h12" stroke="#0B0B0B" stroke-width="1.2"/>
-</g>'''
-
-
 def render(mode, total, weeks):
     t = THEMES[mode]
     cols = len(weeks)
-    width = LEFT * 2 + cols * (CELL + GAP)
-    height = TOP + 7 * (CELL + GAP) + 40
+    width = LEFT * 2 + cols * (CELL + GAP) + 16
+    height = TOP + 7 * (CELL + GAP) + 50
     peak = max((d["contributionCount"] for w in weeks for d in w["contributionDays"]), default=0)
     path = swing_path(cols, width)
     cells = []
@@ -84,19 +70,25 @@ def render(mode, total, weeks):
             lv = level(d["contributionCount"], peak)
             fill = t["empty"] if lv < 0 else t["levels"][lv]
             zap = f' class="z" style="--c:{fill};animation-delay:{delay:.2f}s"' if lv >= 0 else ""
-            cells.append(f'<rect x="{x}" y="{y}" width="{CELL}" height="{CELL}" rx="2" fill="{fill}"{zap}/>')
-    return f'''<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" viewBox="0 0 {width} {height}" role="img" aria-label="{total} contributions in the last year, with a spider swinging across the graph">
-<style>
-  .z {{ animation: zap {DURATION}s linear infinite; }}
-  @keyframes zap {{ 0%, 2% {{ fill: {BLUE}; }} 5%, 100% {{ fill: var(--c); }} }}
-  .web {{ stroke-dasharray: 6000; stroke-dashoffset: 6000; animation: shoot {DURATION}s linear infinite; }}
-  @keyframes shoot {{ to {{ stroke-dashoffset: 0; }} }}
-  @media (prefers-reduced-motion: reduce) {{ .z, .web {{ animation: none; }} #rider {{ display: none; }} }}
-</style>
-<text x="{LEFT}" y="{height - 12}" font-family="'Fira Code', Consolas, monospace" font-size="14" fill="{t["text"]}">{total} contributions in the last year</text>
+            cells.append(f'<rect x="{x}" y="{y}" width="{CELL}" height="{CELL}" rx="4" fill="{fill}" stroke="{INK}" stroke-width="1.5"{zap}/>')
+    css = style(
+        f".z {{ animation: zap {DURATION}s linear infinite; }}",
+        f"@keyframes zap {{ 0%, 2% {{ fill: {BLUE}; }} 5%, 100% {{ fill: var(--c); }} }}",
+        f".web {{ stroke-dasharray: 6000; stroke-dashoffset: 6000; animation: shoot {DURATION}s linear infinite; }}",
+        "@keyframes shoot { to { stroke-dashoffset: 0; } }",
+        "@media (prefers-reduced-motion: reduce) { #rider { display: none; } }",
+    )
+    return f'''<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" viewBox="0 0 {width} {height}" role="img" aria-label="{total} contributions in the last year, with a cartoon spider swinging across the graph">
+{css}
+<defs><clipPath id="f"><rect x="6" y="6" width="{width - 22}" height="{height - 22}" rx="24"/></clipPath></defs>
+{shadow_box(6, 6, width - 22, height - 22, t["panel"], r=24, off=9, sw=5)}
+<g clip-path="url(#f)">
+{comic_text(LEFT, 52, f"{total:,} CONTRIBUTIONS IN THE LAST YEAR", 30, t["fg"] if mode == "light" else "#FFE14D", shadow=INK, off=3, sw=6)}
 {"".join(cells)}
-<path class="web" d="{path}" fill="none" stroke="{t["web"]}" stroke-width="1" opacity="0.35"/>
-<g id="rider">{SPIDER}<animateMotion dur="{DURATION}s" repeatCount="indefinite" path="{path}"/></g>
+<path class="web" d="{path}" fill="none" stroke="{t["thread"]}" stroke-width="2.5" stroke-linecap="round" opacity="0.6"/>
+<g id="rider"><g transform="scale(0.9)">{mini_spider()}</g><animateMotion dur="{DURATION}s" repeatCount="indefinite" path="{path}"/></g>
+</g>
+<rect x="6" y="6" width="{width - 22}" height="{height - 22}" rx="24" fill="none" stroke="{INK}" stroke-width="5"/>
 </svg>'''
 
 

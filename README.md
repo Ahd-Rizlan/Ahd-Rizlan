@@ -5,10 +5,10 @@
 </picture>
 
 <p align="center">
-  <img alt="Typing animation: full-stack developer, Java and Spring Boot, React and Angular, test automation, always shipping" src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=500&size=20&duration=2800&pause=900&color=00D4FF&center=true&vCenter=true&width=640&lines=%3E+miles.init()%3B;Full-stack+developer;Java+%2B+Spring+Boot;React+%2B+Angular;Test+automation+nerd;Always+shipping.">
+  <img alt="Typing animation: full-stack developer, Java and Spring Boot, React and Angular, test automation, always shipping" src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=500&size=20&duration=2800&pause=900&color=E23636&center=true&vCenter=true&width=640&lines=%3E+miles.init()%3B;Full-stack+developer;Java+%2B+Spring+Boot;React+%2B+Angular;Test+automation+nerd;Always+shipping.">
 </p>
 
-<img alt="Meanwhile, in the terminal" src="assets/captions/about.svg" height="44">
+<img alt="Meanwhile, in the terminal" src="assets/captions/about.svg" height="64">
 
 ```js
 const rizlan = {
@@ -25,7 +25,7 @@ const rizlan = {
   <img alt="" src="assets/divider-light.svg" width="100%">
 </picture>
 
-<img alt="Spider-sense stack" src="assets/captions/stack.svg" height="44">
+<img alt="Spider-sense stack" src="assets/captions/stack.svg" height="64">
 
 <p align="center">
   <picture>
@@ -34,7 +34,7 @@ const rizlan = {
   </picture>
 </p>
 
-<img alt="Power levels" src="assets/captions/stats.svg" height="44">
+<img alt="Power levels" src="assets/captions/stats.svg" height="64">
 
 <p align="center">
   <picture>
@@ -48,8 +48,8 @@ const rizlan = {
 </p>
 <p align="center">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://streak-stats.demolab.com?user=Ahd-Rizlan&hide_border=true&background=0B0B0B&ring=E23636&fire=00D4FF&currStreakNum=FFFFFF&sideNums=E23636&currStreakLabel=00D4FF&sideLabels=E6F6FF&dates=9FB3C8&stroke=333333">
-    <img alt="Contribution streak" src="https://streak-stats.demolab.com?user=Ahd-Rizlan&hide_border=true&background=F7F3EA&ring=E23636&fire=0096B4&currStreakNum=0B0B0B&sideNums=E23636&currStreakLabel=0096B4&sideLabels=0B0B0B&dates=4A5560&stroke=CCCCCC">
+    <source media="(prefers-color-scheme: dark)" srcset="https://streak-stats.demolab.com?user=Ahd-Rizlan&background=221C45&border=0B0B0B&ring=E23636&fire=FFE14D&currStreakNum=FFFFFF&sideNums=FFE14D&currStreakLabel=00D4FF&sideLabels=FFFFFF&dates=B9C6D6&stroke=0B0B0B&border_radius=22">
+    <img alt="Contribution streak" src="https://streak-stats.demolab.com?user=Ahd-Rizlan&background=FFFFFF&border=0B0B0B&ring=E23636&fire=E23636&currStreakNum=0B0B0B&sideNums=E23636&currStreakLabel=0096B4&sideLabels=0B0B0B&dates=4A4560&stroke=0B0B0B&border_radius=22">
   </picture>
 </p>
 
@@ -58,7 +58,7 @@ const rizlan = {
   <img alt="" src="assets/divider-light.svg" width="100%">
 </picture>
 
-<img alt="Pinned missions" src="assets/captions/missions.svg" height="44">
+<img alt="Pinned missions" src="assets/captions/missions.svg" height="64">
 
 <p align="center">
   <a href="https://github.com/Ahd-Rizlan/Ember-Js"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/cards/01-dark.svg"><img alt="Issue 01: Ember" src="assets/cards/01-light.svg" width="49%"></picture></a>
@@ -69,14 +69,14 @@ const rizlan = {
   <a href="https://github.com/Ahd-Rizlan/Property-Sell-Website-React-"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/cards/06-dark.svg"><img alt="Issue 06: Property finder" src="assets/cards/06-light.svg" width="49%"></picture></a>
 </p>
 
-<img alt="Classified files" src="assets/captions/classified.svg" height="44">
+<img alt="Classified files" src="assets/captions/classified.svg" height="64">
 
 <p align="center">
   <a href="https://influencerhub-psi.vercel.app"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/cards/07-dark.svg"><img alt="Issue 07: InfluencerHub, private repo with live demo" src="assets/cards/07-light.svg" width="49%"></picture></a>
   <picture><source media="(prefers-color-scheme: dark)" srcset="assets/cards/08-dark.svg"><img alt="Issue 08: Nive e-commerce, private repo" src="assets/cards/08-light.svg" width="49%"></picture>
 </p>
 
-<img alt="The web I've spun" src="assets/captions/web.svg" height="44">
+<img alt="The web I've spun" src="assets/captions/web.svg" height="64">
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/Ahd-Rizlan/Ahd-Rizlan/output/spider-dark.svg">
@@ -94,7 +94,7 @@ const rizlan = {
 
 </details>
 
-<img alt="Signal the spider" src="assets/captions/contact.svg" height="44">
+<img alt="Signal the spider" src="assets/captions/contact.svg" height="64">
 
 <p>
   <a href="https://github.com/Ahd-Rizlan"><img alt="GitHub" src="https://img.shields.io/badge/GitHub-Ahd--Rizlan-0B0B0B?style=for-the-badge&logo=github&labelColor=E23636"></a>
@@ -103,4 +103,4 @@ const rizlan = {
   -->
 </p>
 
-<sub>Original artwork inspired by the Spider-Verse look. Not affiliated with Marvel or Sony.</sub>
+<sub>Original artwork inspired by the Spider-Verse look. Not affiliated with Marvel or Sony. Comic lettering: <a href="https://github.com/googlefonts/bangers">Bangers</a> (SIL Open Font License).</sub>

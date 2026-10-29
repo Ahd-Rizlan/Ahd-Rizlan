@@ -1,4 +1,4 @@
-"""Draws the "power levels" stats card and top-languages card.
+"""Draws the cartoon stats card and top-languages card.
 
 Self-hosted replacement for public stats services, which go down often.
 Needs GITHUB_TOKEN (and optionally GITHUB_USER). Writes dist/stats-*.svg
@@ -10,6 +10,8 @@ import urllib.request
 from html import escape
 from pathlib import Path
 
+from cartoon import BLUE, COMIC, INK, MONO, PINK, RED, THEMES, WHITE, YELLOW, burst, comic_text, shadow_box, style
+
 USER = os.environ.get("GITHUB_USER", "Ahd-Rizlan")
 TOKEN = os.environ["GITHUB_TOKEN"]
 OUT = Path(os.environ.get("OUT_DIR", "dist"))
@@ -17,19 +19,12 @@ OUT = Path(os.environ.get("OUT_DIR", "dist"))
 QUERY = """query($login:String!){user(login:$login){
   contributionsCollection{totalCommitContributions totalPullRequestContributions
     totalIssueContributions restrictedContributionsCount}
-  followers{totalCount}
   repositories(first:100, ownerAffiliations:OWNER, isFork:false){totalCount nodes{
     stargazerCount languages(first:10, orderBy:{field:SIZE, direction:DESC}){
-      edges{size node{name color}}}}}}}"""
+      edges{size node{name}}}}}}}"""
 
-RED, BLUE, YELLOW, INK = "#E23636", "#00D4FF", "#FFE14D", "#0B0B0B"
-THEMES = {
-    "dark": {"bg": INK, "fg": "#FFFFFF", "muted": "#9FB3C8", "border": "#FFFFFF", "track": "#222831", "blue": BLUE},
-    "light": {"bg": "#F7F3EA", "fg": INK, "muted": "#4A5560", "border": INK, "track": "#E2DCCD", "blue": "#0096B4"},
-}
-DISPLAY = "Impact, 'Arial Black', sans-serif"
-MONO = "'Fira Code', Consolas, monospace"
 SKIP_LANGS = {"Jupyter Notebook", "ShaderLab", "HLSL", "Mathematica", "PLpgSQL"}
+W, H = 460, 260
 
 
 def fetch():
@@ -40,36 +35,39 @@ def fetch():
         return json.load(r)["data"]["user"]
 
 
-def header(t, title, w):
-    return (f'<rect x="3" y="3" width="{w - 6}" height="194" fill="{t["bg"]}" stroke="{t["border"]}" stroke-width="4"/>'
-            f'<rect x="20" y="18" width="{14 * len(title) + 24}" height="28" fill="{YELLOW}" stroke="{INK}" stroke-width="2"/>'
-            f'<text x="32" y="39" font-family="{DISPLAY}" font-size="18" letter-spacing="1" fill="{INK}">{escape(title)}</text>')
+def frame(t, title, head):
+    return (f'<defs><clipPath id="c"><rect x="6" y="6" width="{W - 22}" height="{H - 22}" rx="22"/></clipPath></defs>'
+            + shadow_box(6, 6, W - 22, H - 22, t["panel"], r=22, off=9, sw=5)
+            + f'<g clip-path="url(#c)"><rect x="6" y="6" width="{W - 22}" height="60" fill="{head}"/></g>'
+            f'<line x1="6" y1="66" x2="{W - 16}" y2="66" stroke="{INK}" stroke-width="5"/>'
+            f'<rect x="6" y="6" width="{W - 22}" height="{H - 22}" rx="22" fill="none" stroke="{INK}" stroke-width="5"/>'
+            + comic_text(28, 52, title, 34, WHITE, shadow=INK, off=4, sw=7))
 
 
 def stats_svg(mode, u):
     t = THEMES[mode]
     c = u["contributionsCollection"]
     stars = sum(n["stargazerCount"] for n in u["repositories"]["nodes"])
-    rows = [("Commits (this year)", c["totalCommitContributions"] + c["restrictedContributionsCount"]),
+    rows = [("Commits this year", c["totalCommitContributions"] + c["restrictedContributionsCount"]),
             ("Pull requests", c["totalPullRequestContributions"]),
             ("Issues", c["totalIssueContributions"]),
             ("Repositories", u["repositories"]["totalCount"]),
             ("Stars earned", stars)]
     body = []
     for i, (label, val) in enumerate(rows):
-        y = 74 + i * 25
-        col = RED if i % 2 == 0 else t["blue"]
-        body.append(f'<rect x="24" y="{y - 11}" width="6" height="14" fill="{col}"/>'
-                    f'<text x="40" y="{y + 1}" font-family="{MONO}" font-size="14" fill="{t["muted"]}">{label}</text>'
-                    f'<text x="300" y="{y + 1}" text-anchor="end" font-family="{DISPLAY}" font-size="18" fill="{t["fg"]}">{val:,}</text>')
+        y = 98 + i * 28
+        col = [RED, BLUE, YELLOW][i % 3]
+        body.append(f'<circle cx="34" cy="{y - 6}" r="7" fill="{col}" stroke="{INK}" stroke-width="3"/>'
+                    f'<text x="50" y="{y}" font-family="{MONO}" font-size="14" fill="{t["muted"]}">{label}</text>'
+                    f'<text x="268" y="{y + 1}" text-anchor="end" font-family="{COMIC}" font-size="24" letter-spacing="1" fill="{t["fg"]}">{val:,}</text>')
     total = sum(v for _, v in rows[:3])
-    return f'''<svg xmlns="http://www.w3.org/2000/svg" width="440" height="200" viewBox="0 0 440 200" role="img" aria-label="GitHub stats: {", ".join(f"{l} {v}" for l, v in rows)}">
-{header(t, "THE STATS", 440)}
+    return f'''<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" viewBox="0 0 {W} {H}" role="img" aria-label="GitHub stats: {", ".join(f"{l} {v}" for l, v in rows)}">
+{style(".spin { animation: spin 8s linear infinite; transform-origin: 362px 156px; }", "@keyframes spin { to { transform: rotate(360deg); } }")}
+{frame(t, "THE STATS", RED)}
 {"".join(body)}
-<circle cx="370" cy="112" r="44" fill="none" stroke="{t["track"]}" stroke-width="8"/>
-<circle cx="370" cy="112" r="44" fill="none" stroke="{RED}" stroke-width="8" stroke-dasharray="210 277" transform="rotate(-90 370 112)"/>
-<text x="370" y="120" text-anchor="middle" font-family="{DISPLAY}" font-size="26" fill="{t["fg"]}">{total:,}</text>
-<text x="370" y="174" text-anchor="middle" font-family="{MONO}" font-size="11" fill="{t["muted"]}">contributions</text>
+<g class="spin">{burst(362, 156, 82, points=14, fill=YELLOW, sw=5, seed=3)}</g>
+{comic_text(362, 164, f"{total:,}", 38, RED, anchor="middle", sw=6, off=0)}
+<text x="362" y="188" text-anchor="middle" font-family="{COMIC}" font-size="15" letter-spacing="1" fill="{INK}">THIS YEAR</text>
 </svg>'''
 
 
@@ -83,21 +81,25 @@ def langs_svg(mode, u):
                 sizes[name] = sizes.get(name, 0) + e["size"]
     top = sorted(sizes.items(), key=lambda kv: -kv[1])[:6]
     total = sum(v for _, v in top) or 1
-    palette = [RED, t["blue"], YELLOW, "#FF7A7A", "#7FE8FF", t["muted"]]
-    bar, x = [], 24
+    palette = [RED, BLUE, YELLOW, PINK, WHITE, "#9B7BFF"]
+    bar, x = [], 28
     for i, (_, v) in enumerate(top):
-        w = 392 * v / total
-        bar.append(f'<rect x="{x:.1f}" y="62" width="{w:.1f}" height="12" fill="{palette[i]}"/>')
+        w = 396 * v / total
+        bar.append(f'<rect x="{x:.1f}" y="88" width="{w:.1f}" height="24" fill="{palette[i]}"/>')
         x += w
     legend = []
     for i, (name, v) in enumerate(top):
-        cx, cy = 24 + (i % 2) * 200, 102 + (i // 2) * 28
-        legend.append(f'<rect x="{cx}" y="{cy - 10}" width="12" height="12" fill="{palette[i]}" stroke="{INK}" stroke-width="1"/>'
-                      f'<text x="{cx + 20}" y="{cy + 1}" font-family="{MONO}" font-size="14" fill="{t["fg"]}">{escape(name)}'
-                      f' <tspan fill="{t["muted"]}">{100 * v / total:.1f}%</tspan></text>')
-    return f'''<svg xmlns="http://www.w3.org/2000/svg" width="440" height="200" viewBox="0 0 440 200" role="img" aria-label="Top languages: {", ".join(n for n, _ in top)}">
-{header(t, "TOP LANGUAGES", 440)}
-{"".join(bar)}
+        cx, cy = 34 + (i % 2) * 206, 146 + (i // 2) * 30
+        legend.append(f'<circle cx="{cx}" cy="{cy - 6}" r="8" fill="{palette[i]}" stroke="{INK}" stroke-width="3"/>'
+                      f'<text x="{cx + 16}" y="{cy}" font-family="{COMIC}" font-size="20" letter-spacing="1" fill="{t["fg"]}">{escape(name.upper())}'
+                      f' <tspan font-family="{MONO}" font-size="13" fill="{t["muted"]}">{100 * v / total:.1f}%</tspan></text>')
+    return f'''<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" viewBox="0 0 {W} {H}" role="img" aria-label="Top languages: {", ".join(n for n, _ in top)}">
+{style()}
+{frame(t, "TOP LANGUAGES", BLUE)}
+<defs><clipPath id="bar"><rect x="28" y="88" width="396" height="24" rx="12"/></clipPath></defs>
+<rect x="32" y="92" width="396" height="24" rx="12" fill="{INK}"/>
+<g clip-path="url(#bar)">{"".join(bar)}</g>
+<rect x="28" y="88" width="396" height="24" rx="12" fill="none" stroke="{INK}" stroke-width="4"/>
 {"".join(legend)}
 </svg>'''
 

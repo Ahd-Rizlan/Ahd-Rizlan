@@ -1,161 +1,159 @@
-"""Generates the static SVG artwork for the profile README.
+"""Generates the static cartoon SVG artwork for the profile README.
 
 Run from the repo root:  python scripts/generate_assets.py
-Outputs go to assets/. Everything is original artwork (halftone, webs,
-glitch) in a Miles-inspired palette; no official logos or character art.
+Outputs go to assets/. Everything is original artwork; the mascot is
+Webby, an original spider, not any official character.
 """
-from pathlib import Path
-from html import escape
+import math
 import textwrap
+from html import escape
 
-ROOT = Path(__file__).resolve().parent.parent
+from cartoon import (BLUE, COMIC, INK, MONO, RED, ROOT, THEMES, WHITE, YELLOW, burst, comic_text,
+                     mascot, mini_spider, pill, shadow_box, style)
+
 OUT = ROOT / "assets"
 
-RED = "#E23636"
-BLUE = "#00D4FF"
-YELLOW = "#FFE14D"
-INK = "#0B0B0B"
 
-THEMES = {
-    "dark": {"bg": INK, "fg": "#FFFFFF", "muted": "#9FB3C8", "panel": "#111418",
-             "border": "#FFFFFF", "web": "#FFFFFF", "bubble": "#FFFFFF", "bubble_fg": INK},
-    "light": {"bg": "#F7F3EA", "fg": INK, "muted": "#4A5560", "panel": "#FFFFFF",
-              "border": INK, "web": INK, "bubble": YELLOW, "bubble_fg": INK},
-}
-
-DISPLAY = "Impact, 'Arial Black', 'Helvetica Neue', sans-serif"
-MONO = "'Fira Code', Consolas, 'Courier New', monospace"
+def sunburst(cx, cy, color, n=22, r=1200):
+    wedges = []
+    for i in range(0, n * 2, 2):
+        a1, a2 = math.pi * i / n, math.pi * (i + 1) / n
+        wedges.append(f'<polygon points="{cx},{cy} {cx + r * math.cos(a1):.0f},{cy + r * math.sin(a1):.0f} '
+                      f'{cx + r * math.cos(a2):.0f},{cy + r * math.sin(a2):.0f}"/>')
+    return f'<g fill="{color}" class="spin" style="transform-origin:{cx}px {cy}px">{"".join(wedges)}</g>'
 
 
-def web(cx, cy, r, color, spokes=9, rings=5, start=90, sweep=90):
-    """Corner spider web: radial spokes joined by sagging rings."""
-    import math
-    parts = []
-    angles = [math.radians(start + sweep * i / (spokes - 1)) for i in range(spokes)]
-    for a in angles:
-        parts.append(f'<line x1="{cx}" y1="{cy}" x2="{cx + r * math.cos(a):.1f}" '
-                     f'y2="{cy + r * math.sin(a):.1f}"/>')
-    for k in range(1, rings + 1):
-        rr = r * k / rings
-        d = []
-        for i, a in enumerate(angles):
-            x, y = cx + rr * math.cos(a), cy + rr * math.sin(a)
-            if i == 0:
-                d.append(f"M{x:.1f},{y:.1f}")
-            else:
-                mid = (angles[i - 1] + a) / 2
-                sag = rr * 0.86
-                qx, qy = cx + sag * math.cos(mid), cy + sag * math.sin(mid)
-                d.append(f"Q{qx:.1f},{qy:.1f} {x:.1f},{y:.1f}")
-        parts.append(f'<path d="{" ".join(d)}" fill="none"/>')
-    return f'<g stroke="{color}" stroke-width="1.2" opacity="0.55">{"".join(parts)}</g>'
+def skyline(t, w, base):
+    """Rounded cartoon buildings along the bottom edge."""
+    out, x, i = [], -10, 0
+    heights = [70, 110, 85, 140, 95, 60, 125, 80, 150, 90, 115, 70, 135, 100]
+    while x < w:
+        bw = 70 + (i * 37) % 40
+        bh = heights[i % len(heights)]
+        y = base - bh
+        out.append(f'<rect x="{x}" y="{y}" width="{bw}" height="{bh + 20}" rx="10" fill="{t["city"]}" stroke="{INK}" stroke-width="4"/>')
+        for wy in range(y + 16, base - 10, 26):
+            for wx in range(x + 12, x + bw - 16, 22):
+                if (wx * 7 + wy * 3 + i) % 5 < 2:
+                    out.append(f'<rect x="{wx}" y="{wy}" width="10" height="12" rx="2" fill="{t["window"]}" class="win" '
+                               f'style="animation-delay:{(wx + wy) % 7 * 0.6:.1f}s"/>')
+        x += bw - 4
+        i += 1
+    return "".join(out)
+
+
+def sparkle(x, y, s, delay):
+    return (f'<path class="twinkle" style="animation-delay:{delay}s;transform-origin:{x}px {y}px" '
+            f'd="M{x},{y - s} Q{x + s * .15},{y - s * .15} {x + s},{y} Q{x + s * .15},{y + s * .15} {x},{y + s} '
+            f'Q{x - s * .15},{y + s * .15} {x - s},{y} Q{x - s * .15},{y - s * .15} {x},{y - s} z" '
+            f'fill="{YELLOW}" stroke="{INK}" stroke-width="3" stroke-linejoin="round"/>')
 
 
 def banner(mode):
     t = THEMES[mode]
-    w, h = 1200, 340
-    return f'''<svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" viewBox="0 0 {w} {h}" role="img" aria-label="Ahamed Rizlan, software engineer. Comic-style banner with halftone dots and spider webs.">
-<style>
-  .glitch-r {{ animation: gr 4s steps(1) infinite; }}
-  .glitch-b {{ animation: gb 4s steps(1) infinite; }}
-  .bolt {{ animation: zap 2.6s linear infinite; }}
-  .bolt.b2 {{ animation-delay: .9s; }}
-  .bolt.b3 {{ animation-delay: 1.7s; }}
-  @keyframes gr {{ 0%,86%,100% {{ transform: translate(4px,0); }} 88% {{ transform: translate(10px,-3px); }} 92% {{ transform: translate(-6px,2px); }} }}
-  @keyframes gb {{ 0%,86%,100% {{ transform: translate(-4px,0); }} 88% {{ transform: translate(-10px,3px); }} 92% {{ transform: translate(6px,-2px); }} }}
-  @keyframes zap {{ 0%,70%,100% {{ opacity: 0; }} 74%,82% {{ opacity: 1; }} 78% {{ opacity: .3; }} }}
-  @media (prefers-reduced-motion: reduce) {{ .glitch-r,.glitch-b,.bolt {{ animation: none; }} }}
-</style>
+    w, h = 1200, 420
+    css = style(
+        ".spin { animation: spin 60s linear infinite; }",
+        "@keyframes spin { to { transform: rotate(360deg); } }",
+        ".bob { animation: bob 2.6s ease-in-out infinite alternate; }",
+        "@keyframes bob { from { transform: translate(1010px, 205px) rotate(-3deg); } to { transform: translate(1010px, 235px) rotate(3deg); } }",
+        ".wobble { animation: wobble 3s ease-in-out infinite alternate; transform-origin: 320px 250px; }",
+        "@keyframes wobble { from { transform: rotate(-4deg); } to { transform: rotate(-2deg) scale(1.02); } }",
+        ".pow { animation: pow 1.6s ease-in-out infinite; }",
+        "@keyframes pow { 0%,100% { transform: scale(1) rotate(-8deg); } 50% { transform: scale(1.12) rotate(4deg); } }",
+        ".twinkle { animation: tw 1.8s ease-in-out infinite; }",
+        "@keyframes tw { 0%,100% { transform: scale(.4); opacity: .3; } 50% { transform: scale(1); opacity: 1; } }",
+        ".win { animation: win 4.2s steps(1) infinite; }",
+        "@keyframes win { 0%,70% { opacity: 1; } 71%,100% { opacity: .25; } }",
+        ".bubble { animation: pop 2.6s ease-in-out infinite alternate; transform-origin: 770px 120px; }",
+        "@keyframes pop { from { transform: scale(.96) rotate(2deg); } to { transform: scale(1.03) rotate(-1deg); } }",
+    )
+    return f'''<svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" viewBox="0 0 {w} {h}" role="img" aria-label="Cartoon banner: Ahamed Rizlan, software engineer. A cute spider with headphones hangs from a web and says Thwip, deployed.">
+{css}
 <defs>
-  <pattern id="dots" width="12" height="12" patternUnits="userSpaceOnUse">
-    <circle cx="6" cy="6" r="2.4" fill="{RED}"/>
-  </pattern>
-  <linearGradient id="fade" x1="0" x2="1">
-    <stop offset="0.35" stop-color="#fff" stop-opacity="0"/>
-    <stop offset="1" stop-color="#fff" stop-opacity="1"/>
-  </linearGradient>
-  <mask id="m"><rect width="{w}" height="{h}" fill="url(#fade)"/></mask>
+  <clipPath id="frame"><rect x="6" y="6" width="{w - 12}" height="{h - 12}" rx="28"/></clipPath>
+  <pattern id="dots" width="16" height="16" patternUnits="userSpaceOnUse"><circle cx="8" cy="8" r="3" fill="{t["dot"]}" opacity="0.35"/></pattern>
 </defs>
-<rect width="{w}" height="{h}" fill="{t["bg"]}"/>
-<rect width="{w}" height="{h}" fill="url(#dots)" mask="url(#m)"/>
-<polygon points="860,0 1200,0 1200,{h} 790,{h}" fill="{RED}" opacity="0.92"/>
-<polygon points="860,0 1200,0 1200,{h} 790,{h}" fill="url(#dots)" opacity="0.35" style="mix-blend-mode:multiply"/>
-{web(1200, 0, 300, t["web"] if mode == "light" else "#FFFFFF", start=90, sweep=90)}
-<text x="1010" y="215" text-anchor="middle" font-family="{DISPLAY}" font-size="88" fill="{INK}" transform="rotate(-8 1010 200)" opacity="0.9">THWIP!</text>
-
-<text x="60" y="66" font-family="{MONO}" font-size="16" fill="{BLUE}" letter-spacing="3">EARTH-1610 // FULL-STACK DIVISION</text>
-
-<g font-family="{DISPLAY}" font-size="96" letter-spacing="2">
-  <text class="glitch-b" x="56" y="170" fill="{BLUE}">AHAMED RIZLAN</text>
-  <text class="glitch-r" x="56" y="170" fill="{RED}">AHAMED RIZLAN</text>
-  <text x="56" y="170" fill="{t["fg"]}">AHAMED RIZLAN</text>
+<g clip-path="url(#frame)">
+  <rect width="{w}" height="{h}" fill="{t["bg"]}"/>
+  {sunburst(470, 240, t["ray"])}
+  <rect x="0" y="0" width="260" height="{h}" fill="url(#dots)"/>
+  <rect x="940" y="0" width="260" height="{h}" fill="url(#dots)"/>
+  {skyline(t, w, h)}
+  <g class="wobble">
+    {comic_text(84, 214, "AHAMED", 156, YELLOW, shadow=INK, off=8, sw=12)}
+    {comic_text(150, 336, "RIZLAN", 156, RED, shadow=INK, off=8, sw=12)}
+  </g>
+  <g transform="translate(96 88)"><g class="pow">
+    {burst(0, 0, 64, points=12, fill=YELLOW, sw=6)}
+    {comic_text(0, 12, "POW!", 36, RED, anchor="middle", sw=6, off=0)}
+  </g></g>
+  {pill(96, 352, "SOFTWARE ENGINEER · JAVA · REACT · ANGULAR", BLUE, size=24)[0]}
+  <g class="bubble">
+    <path d="M640,56 Q640,34 662,34 L878,34 Q900,34 900,56 L900,126 Q900,148 878,148 L840,148 L930,196 L790,148 L662,148 Q640,148 640,126 Z" fill="{INK}" transform="translate(7 7)"/>
+    <path d="M640,56 Q640,34 662,34 L878,34 Q900,34 900,56 L900,126 Q900,148 878,148 L840,148 L930,196 L790,148 L662,148 Q640,148 640,126 Z" fill="{WHITE}" stroke="{INK}" stroke-width="5" stroke-linejoin="round"/>
+    <text x="770" y="86" text-anchor="middle" font-family="{COMIC}" font-size="34" letter-spacing="1.5" fill="{RED}">THWIP!</text>
+    <text x="770" y="126" text-anchor="middle" font-family="{COMIC}" font-size="30" letter-spacing="1.5" fill="{INK}">DEPLOYED.</text>
+  </g>
+  <g class="bob">{mascot(t["thread"])}</g>
+  <g stroke="{t["fg"]}" stroke-width="4" stroke-linecap="round" fill="none" opacity="0.7">
+    <path d="M1100,170 q14,10 0,24"/><path d="M1118,160 q20,20 0,44"/>
+    <path d="M920,250 q-14,10 0,24"/>
+  </g>
+  {sparkle(560, 70, 16, 0)}{sparkle(1150, 330, 14, .6)}{sparkle(40, 260, 12, 1.1)}{sparkle(620, 300, 12, .3)}
 </g>
-
-<g stroke="{BLUE}" stroke-width="3" fill="none" stroke-linejoin="round">
-  <polyline class="bolt" points="640,30 662,48 650,54 674,76"/>
-  <polyline class="bolt b2" points="700,96 724,112 712,120 740,140"/>
-  <polyline class="bolt b3" points="620,186 646,198 634,206 664,222"/>
-</g>
-
-<text x="60" y="212" font-family="{MONO}" font-size="20" fill="{t["muted"]}">Software engineer · Java · React · Angular · Automation</text>
-
-<g transform="rotate(-2 300 272)">
-  <path d="M60,240 h620 a8,8 0 0 1 8,8 v40 a8,8 0 0 1 -8,8 h-540 l-26,22 l4,-22 h-58 a8,8 0 0 1 -8,-8 v-40 a8,8 0 0 1 8,-8 z" fill="{t["bubble"]}" stroke="{INK}" stroke-width="3"/>
-  <text x="80" y="276" font-family="{DISPLAY}" font-size="22" fill="{t["bubble_fg"]}" letter-spacing="1">JUST A DEV SWINGING BETWEEN JAVA AND JAVASCRIPT.</text>
-</g>
-<rect x="0" y="{h - 8}" width="{w}" height="8" fill="{BLUE}"/>
-<rect x="0" y="0" width="{w}" height="{h}" fill="none" stroke="{t["border"]}" stroke-width="6"/>
+<rect x="6" y="6" width="{w - 12}" height="{h - 12}" rx="28" fill="none" stroke="{INK}" stroke-width="8"/>
 </svg>'''
 
 
-def caption(text, tilt=-1.5):
-    w = 18 * len(text) + 48
-    return f'''<svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="58" viewBox="0 0 {w} 58" role="img" aria-label="{escape(text.title())}">
-<g transform="rotate({tilt} {w / 2} 29)">
-  <rect x="6" y="8" width="{w - 12}" height="40" fill="{YELLOW}" stroke="{INK}" stroke-width="3"/>
-  <rect x="12" y="14" width="{w - 12}" height="40" fill="none" stroke="{RED}" stroke-width="2" opacity="0.8"/>
-  <text x="{w / 2}" y="37" text-anchor="middle" font-family="{DISPLAY}" font-size="22" letter-spacing="1.5" fill="{INK}">{escape(text)}</text>
+def caption(text, color=YELLOW, seed=1):
+    w = int(15.5 * len(text) + 96)
+    return f'''<svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="74" viewBox="0 0 {w} 74" role="img" aria-label="{escape(text.title())}">
+{style()}
+<g transform="rotate({-1.5 if seed % 2 else 1.2} {w / 2} 37)">
+  {shadow_box(30, 12, w - 46, 46, color, r=23, off=6, sw=4)}
+  <text x="{(w + 30) / 2:.0f}" y="45" text-anchor="middle" font-family="{COMIC}" font-size="28" letter-spacing="1.5" fill="{INK}">{escape(text)}</text>
+  {burst(32, 35, 26, points=9, fill=RED if seed % 2 else BLUE, sw=4, seed=seed)}
 </g>
 </svg>'''
 
 
 def divider(mode):
     t = THEMES[mode]
-    return f'''<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="48" viewBox="0 0 1200 48" role="img" aria-label="Web line divider">
-<style>.shot {{ stroke-dasharray: 560; stroke-dashoffset: 560; animation: shoot 5s ease-out infinite; }}
-@keyframes shoot {{ 0% {{ stroke-dashoffset: 560; }} 30%,100% {{ stroke-dashoffset: 0; }} }}
-@media (prefers-reduced-motion: reduce) {{ .shot {{ animation: none; stroke-dashoffset: 0; }} }}</style>
-<path class="shot" d="M0,24 Q300,40 560,24" stroke="{t["web"]}" stroke-width="1.5" fill="none" opacity="0.6"/>
-<path class="shot" d="M1200,24 Q900,40 640,24" stroke="{t["web"]}" stroke-width="1.5" fill="none" opacity="0.6"/>
-<polygon points="600,4 610,16 626,12 618,24 630,34 612,32 600,44 590,32 572,34 582,24 574,12 590,16" fill="{RED}" stroke="{INK}" stroke-width="2"/>
-<circle cx="600" cy="24" r="4" fill="{BLUE}"/>
+    return f'''<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="96" viewBox="0 0 1200 96" role="img" aria-label="Divider: a little spider bobbing on a web line">
+{style(".bob { animation: bob 1.8s ease-in-out infinite alternate; }",
+       "@keyframes bob { from { transform: translate(600px, 42px); } to { transform: translate(600px, 58px); } }")}
+<path d="M0,14 Q300,40 600,14 Q900,40 1200,14" fill="none" stroke="{t["thread"]}" stroke-width="3" stroke-dasharray="2 8" stroke-linecap="round" opacity="0.8"/>
+<g class="bob"><line x1="0" y1="-14" x2="0" y2="-70" stroke="{t["thread"]}" stroke-width="2.5"/><g transform="scale(1.5)">{mini_spider()}</g></g>
 </svg>'''
 
 
 def card(mode, issue, title, desc, tags, status=None):
     t = THEMES[mode]
-    lines = textwrap.wrap(desc, 46)[:3]
+    head = RED if int(issue) % 2 else BLUE
+    lines = textwrap.wrap(desc, 44)[:3]
     desc_svg = "".join(
-        f'<text x="24" y="{106 + i * 22}" font-family="{MONO}" font-size="14" fill="{t["muted"]}">{escape(l)}</text>'
+        f'<text x="28" y="{116 + i * 22}" font-family="{MONO}" font-size="14" fill="{t["muted"]}">{escape(l)}</text>'
         for i, l in enumerate(lines))
-    tag_svg, x = [], 24
+    tag_svg, x = [], 26
     for i, tag in enumerate(tags):
-        col = RED if i % 2 == 0 else BLUE
-        tw = 9 * len(tag) + 20
-        tag_svg.append(f'<rect x="{x}" y="176" width="{tw}" height="24" rx="4" fill="none" stroke="{col}" stroke-width="1.5"/>'
-                       f'<text x="{x + tw / 2}" y="193" text-anchor="middle" font-family="{MONO}" font-size="13" fill="{col}">{escape(tag)}</text>')
-        x += tw + 8
+        p, pw = pill(x, 178, escape(tag.upper()), [YELLOW, WHITE, BLUE][i % 3], size=15, off=3)
+        tag_svg.append(p)
+        x += pw + 12
     stamp = ""
     if status:
-        stamp = (f'<g transform="rotate(-8 330 34)"><rect x="262" y="16" width="136" height="34" fill="none" stroke="{RED}" stroke-width="3"/>'
-                 f'<text x="330" y="40" text-anchor="middle" font-family="{DISPLAY}" font-size="20" fill="{RED}" letter-spacing="2">{escape(status)}</text></g>')
-    return f'''<svg xmlns="http://www.w3.org/2000/svg" width="420" height="220" viewBox="0 0 420 220" role="img" aria-label="Issue {issue}: {escape(title)}. {escape(desc)}">
-<defs><pattern id="d" width="10" height="10" patternUnits="userSpaceOnUse"><circle cx="5" cy="5" r="1.8" fill="{RED}"/></pattern></defs>
-<rect x="3" y="3" width="414" height="214" fill="{t["panel"]}" stroke="{t["border"]}" stroke-width="4"/>
-<polygon points="330,3 417,3 417,90" fill="url(#d)" opacity="0.7"/>
-<rect x="24" y="22" width="118" height="26" fill="{YELLOW}" stroke="{INK}" stroke-width="2"/>
-<text x="83" y="41" text-anchor="middle" font-family="{DISPLAY}" font-size="16" fill="{INK}" letter-spacing="1">ISSUE #{issue}</text>
-<text x="24" y="82" font-family="{DISPLAY}" font-size="30" fill="{t["fg"]}" letter-spacing="1">{escape(title.upper())}</text>
+        stamp = (f'<g transform="rotate(-10 330 168)"><rect x="250" y="146" width="160" height="44" rx="8" fill="none" stroke="{RED}" stroke-width="4"/>'
+                 f'<text x="330" y="179" text-anchor="middle" font-family="{COMIC}" font-size="28" letter-spacing="2" fill="{RED}">{escape(status)}</text></g>')
+    return f'''<svg xmlns="http://www.w3.org/2000/svg" width="440" height="250" viewBox="0 0 440 250" role="img" aria-label="Issue {issue}: {escape(title)}. {escape(desc)}">
+{style()}
+<defs><clipPath id="c"><rect x="6" y="6" width="420" height="226" rx="22"/></clipPath></defs>
+{shadow_box(6, 6, 420, 226, t["panel"], r=22, off=9, sw=5)}
+<g clip-path="url(#c)"><rect x="6" y="6" width="420" height="68" fill="{head}"/></g>
+<line x1="6" y1="74" x2="426" y2="74" stroke="{INK}" stroke-width="5"/>
+<rect x="6" y="6" width="420" height="226" rx="22" fill="none" stroke="{INK}" stroke-width="5"/>
+{comic_text(28, 56, escape(title.upper()), 36, WHITE, shadow=INK, off=4, sw=7)}
+{burst(384, 42, 40, points=10, wobble=0.1, fill=YELLOW, sw=4, seed=int(issue))}
+<text x="384" y="50" text-anchor="middle" font-family="{COMIC}" font-size="21" fill="{INK}">#{issue}</text>
 {desc_svg}
 {"".join(tag_svg)}
 {stamp}
@@ -169,8 +167,8 @@ MISSIONS = [
     ("04", "Game AI", "Unity game AI coursework: agent behaviours, steering and shaders.", ["C#", "Unity", "HLSL"], None),
     ("05", "Machine Learning", "Notebooks and experiments: models, data wrangling and evaluation.", ["Python", "Jupyter"], None),
     ("06", "Property Finder", "Responsive single-page property search app with filters and favourites.", ["React", "JavaScript"], None),
-    ("07", "InfluencerHub", "Platform connecting brands with influencers. Live demo available.", ["JavaScript", "Vercel"], "CLASSIFIED"),
-    ("08", "Nive E-commerce", "Full e-commerce storefront with a Postgres backend.", ["Next.js", "Postgres"], "CLASSIFIED"),
+    ("07", "InfluencerHub", "Platform connecting brands with influencers. Live demo available.", ["JavaScript", "Vercel"], "TOP SECRET"),
+    ("08", "Nive Store", "Full e-commerce storefront with a Postgres backend.", ["Next.js", "Postgres"], "TOP SECRET"),
 ]
 
 CAPTIONS = {
@@ -193,7 +191,7 @@ def main():
         for issue, title, desc, tags, status in MISSIONS:
             (OUT / "cards" / f"{issue}-{mode}.svg").write_text(card(mode, issue, title, desc, tags, status), encoding="utf-8")
     for i, (key, text) in enumerate(CAPTIONS.items()):
-        (OUT / "captions" / f"{key}.svg").write_text(caption(text, -1.5 if i % 2 else 1.2), encoding="utf-8")
+        (OUT / "captions" / f"{key}.svg").write_text(caption(text, seed=i + 1), encoding="utf-8")
     print(f"Wrote assets to {OUT}")
 
 
