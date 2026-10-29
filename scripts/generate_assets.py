@@ -4,6 +4,7 @@ Run from the repo root:  python scripts/generate_assets.py
 Outputs go to assets/. Everything is original artwork; the mascot is
 Webby, an original spider, not any official character.
 """
+import base64
 import math
 import textwrap
 from html import escape
@@ -160,6 +161,63 @@ def card(mode, issue, title, desc, tags, status=None):
 </svg>'''
 
 
+def avatar_uri(name):
+    data = (OUT / "avatars" / f"{name}.png").read_bytes()
+    mime = "image/png" if data[1:4] == b"PNG" else "image/jpeg"
+    return f"data:{mime};base64,{base64.b64encode(data).decode()}"
+
+
+def team_card(mode, slug, title, role, desc, tags, current=False):
+    """Organization card: logo in a round comic frame, NOW! burst for the current job."""
+    t = THEMES[mode]
+    head = YELLOW if current else t["city"]
+    title_fill = RED if current else WHITE
+    lines = textwrap.wrap(desc, 44)[:3]
+    desc_svg = "".join(
+        f'<text x="28" y="{136 + i * 22}" font-family="{MONO}" font-size="14" fill="{t["muted"]}">{escape(l)}</text>'
+        for i, l in enumerate(lines))
+    tag_svg, x = [], 26
+    for i, tag in enumerate(tags):
+        p, pw = pill(x, 198, escape(tag.upper()), [YELLOW, WHITE, BLUE][i % 3], size=15, off=3)
+        tag_svg.append(p)
+        x += pw + 12
+    badge = (f'<g class="pulse">{burst(384, 46, 44, points=12, fill=RED, sw=4, wobble=0.1)}'
+             f'<text x="384" y="56" text-anchor="middle" font-family="{COMIC}" font-size="26" letter-spacing="1" fill="{WHITE}" '
+             f'stroke="{INK}" stroke-width="4" paint-order="stroke">NOW!</text></g>') if current else ""
+    css = style(".pulse { animation: pulse 1.4s ease-in-out infinite; transform-origin: 384px 46px; }",
+                "@keyframes pulse { 50% { transform: scale(1.12) rotate(6deg); } }") if current else style()
+    return f'''<svg xmlns="http://www.w3.org/2000/svg" width="440" height="270" viewBox="0 0 440 270" role="img" aria-label="{escape(title)}: {escape(role)}. {escape(desc)}">
+{css}
+<defs>
+  <clipPath id="c"><rect x="6" y="6" width="420" height="246" rx="22"/></clipPath>
+  <clipPath id="logo"><circle cx="62" cy="62" r="34"/></clipPath>
+</defs>
+{shadow_box(6, 6, 420, 246, t["panel"], r=22, off=9, sw=5)}
+<g clip-path="url(#c)"><rect x="6" y="6" width="420" height="86" fill="{head}"/></g>
+<line x1="6" y1="92" x2="426" y2="92" stroke="{INK}" stroke-width="5"/>
+<rect x="6" y="6" width="420" height="246" rx="22" fill="none" stroke="{INK}" stroke-width="5"/>
+<circle cx="66" cy="66" r="38" fill="{INK}"/>
+<circle cx="62" cy="62" r="38" fill="{WHITE}"/>
+<image href="{avatar_uri(slug)}" x="28" y="28" width="68" height="68" clip-path="url(#logo)" preserveAspectRatio="xMidYMid slice"/>
+<circle cx="62" cy="62" r="36" fill="none" stroke="{INK}" stroke-width="5"/>
+{comic_text(114, 58, escape(title.upper()), 34, title_fill, shadow=INK, off=4, sw=7)}
+<text x="116" y="80" font-family="{COMIC}" font-size="17" letter-spacing="1" fill="{INK if current else BLUE}">{escape(role.upper())}</text>
+{desc_svg}
+{"".join(tag_svg)}
+{badge}
+</svg>'''
+
+
+TEAMS = [
+    ("Pacto-Code", "Pacto Code", "Org admin",
+     "Dev studio work: portfolios, digital vCards and sites for Blinksky Productions.", ["TypeScript", "React"], False),
+    ("SGDP-group", "SGDP Group", "Org admin",
+     "FocusFrame: gaze tracking, an AI focus agent, a smart desk clock and a mobile app.", ["Python", "Java", "C"], False),
+    ("AssuraSolutions", "Assura Solutions", "Member",
+     "Client builds: logistics platforms and e-commerce storefronts.", ["TypeScript", "Next.js"], False),
+]
+
+
 MISSIONS = [
     ("01", "Ember", "My current main build. Fresh repo, the story is still being written.", ["JavaScript"], None),
     ("02", "Web Automations", "Test automation framework for a banking web application.", ["Java", "Selenium"], None),
@@ -177,6 +235,7 @@ CAPTIONS = {
     "stats": "POWER LEVELS",
     "missions": "PINNED MISSIONS",
     "classified": "CLASSIFIED FILES",
+    "teams": "TEAM-UPS",
     "web": "THE WEB I'VE SPUN",
     "contact": "SIGNAL THE SPIDER",
 }
@@ -185,11 +244,14 @@ CAPTIONS = {
 def main():
     (OUT / "cards").mkdir(parents=True, exist_ok=True)
     (OUT / "captions").mkdir(parents=True, exist_ok=True)
+    (OUT / "teams").mkdir(parents=True, exist_ok=True)
     for mode in THEMES:
         (OUT / f"banner-{mode}.svg").write_text(banner(mode), encoding="utf-8")
         (OUT / f"divider-{mode}.svg").write_text(divider(mode), encoding="utf-8")
         for issue, title, desc, tags, status in MISSIONS:
             (OUT / "cards" / f"{issue}-{mode}.svg").write_text(card(mode, issue, title, desc, tags, status), encoding="utf-8")
+        for slug, title, role, desc, tags, current in TEAMS:
+            (OUT / "teams" / f"{slug}-{mode}.svg").write_text(team_card(mode, slug, title, role, desc, tags, current), encoding="utf-8")
     for i, (key, text) in enumerate(CAPTIONS.items()):
         (OUT / "captions" / f"{key}.svg").write_text(caption(text, seed=i + 1), encoding="utf-8")
     print(f"Wrote assets to {OUT}")
