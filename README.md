@@ -12,11 +12,11 @@
 
 ```js
 const rizlan = {
-  role:      "Software engineer",
-  basedIn:   "Sri Lanka",
+  role:      "Software engineer, web-slinger on weekends",
+  basedIn:   "Sri Lanka, Earth-1610 edition",
   building:  ["web apps", "automation frameworks", "game AI"],
-  learning:  "the world",
-  offline:   ["cricket", "music"],
+  learning:  "whatever the world throws at me next",
+  offline:   ["smashing boundaries on the cricket pitch", "music on full volume"],
   motto:     "I'm gonna do my own thing.",
 };
 ```
@@ -101,11 +101,11 @@ const rizlan = {
   <summary><b>Enter the Spider-Verse</b> (fun facts)</summary>
   <br>
 
-  - **Favourite language:** all of them. Every language teaches me something new.
-  - **Proudest project:** whichever one is challenging me right now. Every project brings new ideas.
-  - **Currently learning:** the world.
-  - **Off the keyboard:** cricket and music.
-  - **Favourite Spider-Verse moment:** when Miles decides to do his own thing. Same energy.
+  - **Favourite language?** Can't pick just one. Every language is a new universe, and each one hands me a new superpower.
+  - **Proudest project?** The one fighting back right now. Every project throws a new villain at me, and I swing out with fresh ideas and sharper skills.
+  - **Currently learning?** Everything the world is willing to teach me. The syllabus never ends, and that's the fun part.
+  - **Off the keyboard?** Smashing boundaries on the cricket pitch, or lost in a playlist with the volume all the way up.
+  - **Favourite Spider-Verse moment?** Miles deciding he's gonna do his own thing. That's exactly the energy I bring to every line of code.
 
 </details>
 
