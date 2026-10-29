@@ -77,10 +77,10 @@ const rizlan = {
 <p align="center">
   <a href="https://github.com/Ahd-Rizlan/Ember-Js"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/cards/01-dark.svg"><img alt="Issue 01: Ember" src="assets/cards/01-light.svg" width="49%"></picture></a>
   <a href="https://github.com/Ahd-Rizlan/Web-Automations"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/cards/02-dark.svg"><img alt="Issue 02: Web Automations" src="assets/cards/02-light.svg" width="49%"></picture></a>
-  <a href="https://github.com/Ahd-Rizlan/ticketing_simulation-Angular"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/cards/03-dark.svg"><img alt="Issue 03: Ticketing simulation" src="assets/cards/03-light.svg" width="49%"></picture></a>
-  <a href="https://github.com/Ahd-Rizlan/GameAI-CW"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/cards/04-dark.svg"><img alt="Issue 04: Game AI" src="assets/cards/04-light.svg" width="49%"></picture></a>
+  <a href="https://github.com/Ahd-Rizlan/ticketing-system-angular"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/cards/03-dark.svg"><img alt="Issue 03: Ticketing simulation" src="assets/cards/03-light.svg" width="49%"></picture></a>
+  <a href="https://github.com/Ahd-Rizlan/game-ai-unity"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/cards/04-dark.svg"><img alt="Issue 04: Game AI" src="assets/cards/04-light.svg" width="49%"></picture></a>
   <a href="https://github.com/Ahd-Rizlan/Machine-Learning"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/cards/05-dark.svg"><img alt="Issue 05: Machine learning" src="assets/cards/05-light.svg" width="49%"></picture></a>
-  <a href="https://github.com/Ahd-Rizlan/Property-Sell-Website-React-"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/cards/06-dark.svg"><img alt="Issue 06: Property finder" src="assets/cards/06-light.svg" width="49%"></picture></a>
+  <a href="https://github.com/Ahd-Rizlan/property-finder-react"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/cards/06-dark.svg"><img alt="Issue 06: Property finder" src="assets/cards/06-light.svg" width="49%"></picture></a>
 </p>
 
 <img alt="Classified files" src="assets/captions/classified.svg" height="64">
