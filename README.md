@@ -11,7 +11,7 @@
   </picture>
 </p>
 
-<img alt="Meanwhile, in the terminal" src="assets/captions/about.svg" height="64">
+<!-- <img alt="Meanwhile, in the terminal" src="assets/captions/about.svg" height="64">
 
 ```js
 const rizlan = {
@@ -22,14 +22,14 @@ const rizlan = {
   offline:   ["smashing boundaries on the cricket pitch", "music on full volume"],
   motto:     "I'm gonna do my own thing.",
 };
-```
+``` -->
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="assets/divider-dark.svg">
   <img alt="" src="assets/divider-light.svg" width="100%">
 </picture>
 
-<img alt="Spider-sense stack" src="assets/captions/stack.svg" height="64">
+<img alt="Sptack" src="assets/captions/stack.svg" height="64">
 
 <p align="center">
   <picture>
@@ -75,7 +75,7 @@ const rizlan = {
   <img alt="" src="assets/divider-light.svg" width="100%">
 </picture>
 
-<img alt="Pinned missions" src="assets/captions/missions.svg" height="64">
+<!-- <img alt="Pinned missions" src="assets/captions/missions.svg" height="64">
 
 <p align="center">
   <a href="https://github.com/Ahd-Rizlan/Ember-Js"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/cards/01-dark.svg"><img alt="Issue 01: Ember" src="assets/cards/01-light.svg" width="49%"></picture></a>
@@ -98,9 +98,9 @@ const rizlan = {
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/Ahd-Rizlan/Ahd-Rizlan/output/spider-dark.svg">
   <img alt="Contribution graph with a blue light sweeping across it" src="https://raw.githubusercontent.com/Ahd-Rizlan/Ahd-Rizlan/output/spider-light.svg" width="100%">
-</picture>
+</picture> -->
 
-<img alt="Enter the Spider-Verse" src="assets/captions/facts.svg" height="64">
+<!-- <img alt="Enter the Spider-Verse" src="assets/captions/facts.svg" height="64">
 
 <p align="center">
   <picture><source media="(prefers-color-scheme: dark)" srcset="assets/facts/01-dark.svg"><img alt="Favourite language? Can&#39;t pick just one. Every language is a new universe, and each one hands me a new superpower." src="assets/facts/01-light.svg" width="49%"></picture>
@@ -108,7 +108,7 @@ const rizlan = {
   <picture><source media="(prefers-color-scheme: dark)" srcset="assets/facts/03-dark.svg"><img alt="Currently learning? Everything the world is willing to teach me. The syllabus never ends, and that&#39;s the fun part." src="assets/facts/03-light.svg" width="49%"></picture>
   <picture><source media="(prefers-color-scheme: dark)" srcset="assets/facts/04-dark.svg"><img alt="Off the keyboard? Smashing boundaries on the cricket pitch, or lost in a playlist with the volume all the way up." src="assets/facts/04-light.svg" width="49%"></picture>
   <picture><source media="(prefers-color-scheme: dark)" srcset="assets/facts/05-dark.svg"><img alt="Favourite Spider-Verse moment? Miles deciding he&#39;s gonna do his own thing. That&#39;s exactly the energy I bring to every line of code." src="assets/facts/05-light.svg" width="49%"></picture>
-</p>
+</p> -->
 
 <img alt="Signal the spider" src="assets/captions/contact.svg" height="64">
 
