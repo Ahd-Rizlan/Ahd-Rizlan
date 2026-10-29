@@ -5,7 +5,10 @@
 </picture>
 
 <p align="center">
-  <img alt="Typing animation: software engineer from Sri Lanka, Java and Spring Boot, React and Angular, every language teaches something new" src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=500&size=20&duration=2800&pause=900&color=E23636&center=true&vCenter=true&width=640&lines=%3E+miles.init()%3B;Software+engineer+from+Sri+Lanka;Java+%2B+Spring+Boot;React+%2B+Angular;Every+language+teaches+me+something+new.">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=500&size=20&duration=2800&pause=900&color=FF6B6B&center=true&vCenter=true&width=640&lines=%3E+miles.init()%3B;Software+engineer+from+Sri+Lanka;Java+%2B+Spring+Boot;React+%2B+Angular;Every+language+teaches+me+something+new.">
+    <img alt="Typing animation: software engineer from Sri Lanka, Java and Spring Boot, React and Angular, every language teaches something new" src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=500&size=20&duration=2800&pause=900&color=C62828&center=true&vCenter=true&width=640&lines=%3E+miles.init()%3B;Software+engineer+from+Sri+Lanka;Java+%2B+Spring+Boot;React+%2B+Angular;Every+language+teaches+me+something+new.">
+  </picture>
 </p>
 
 <img alt="Meanwhile, in the terminal" src="assets/captions/about.svg" height="64">
@@ -94,7 +97,7 @@ const rizlan = {
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/Ahd-Rizlan/Ahd-Rizlan/output/spider-dark.svg">
-  <img alt="Contribution graph with a spider swinging across it" src="https://raw.githubusercontent.com/Ahd-Rizlan/Ahd-Rizlan/output/spider-light.svg" width="100%">
+  <img alt="Contribution graph with a blue light sweeping across it" src="https://raw.githubusercontent.com/Ahd-Rizlan/Ahd-Rizlan/output/spider-light.svg" width="100%">
 </picture>
 
 <img alt="Enter the Spider-Verse" src="assets/captions/facts.svg" height="64">

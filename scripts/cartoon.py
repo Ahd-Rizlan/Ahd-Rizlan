@@ -27,14 +27,52 @@ THEMES = {
 COMIC = "Bangers, Impact, 'Arial Black', sans-serif"
 MONO = "'Fira Code', Consolas, monospace"
 
-_FONT = base64.b64encode((ROOT / "fonts" / "Bangers-subset.woff").read_bytes()).decode()
-FONT_CSS = f"@font-face {{ font-family: Bangers; src: url(data:font/woff;base64,{_FONT}) format('woff'); }}"
+FONT_FILE = ROOT / "fonts" / "Bangers-subset.woff"
+FONT_SLOT = "/*BANGERS*/"
 
 REDUCED = "@media (prefers-reduced-motion: reduce) { * { animation: none !important; } }"
+# Cards rendered narrower than this (two-up on a phone) switch to their compact layout.
+COMPACT = ("@media (max-width: 330px) { .full { display: none; } }"
+           "@media (min-width: 331px) { .compact { display: none; } }")
 
 
 def style(*rules):
-    return "<style>" + FONT_CSS + "\n" + "\n".join(rules) + "\n" + REDUCED + "</style>"
+    return "<style>" + FONT_SLOT + "\n" + "\n".join(rules) + "\n" + REDUCED + "</style>"
+
+
+_subset_cache = {}
+
+
+def _font_css(chars):
+    """Bangers trimmed to just the characters one image uses."""
+    key = "".join(sorted(chars))
+    if key not in _subset_cache:
+        import io
+        from fontTools import subset
+        from fontTools.ttLib import TTFont
+        font = TTFont(FONT_FILE)
+        opts = subset.Options()
+        opts.flavor = "woff"
+        sub = subset.Subsetter(opts)
+        sub.populate(text=key)
+        sub.subset(font)
+        buf = io.BytesIO()
+        font.flavor = "woff"
+        font.save(buf)
+        data = base64.b64encode(buf.getvalue()).decode()
+        _subset_cache[key] = f"@font-face {{ font-family: Bangers; src: url(data:font/woff;base64,{data}) format('woff'); }}"
+    return _subset_cache[key]
+
+
+def save(path, svg):
+    """Embed the trimmed font and write the SVG."""
+    import html
+    import re
+    chars = set()
+    for m in re.finditer(r'<text[^>]*font-family="Bangers[^>]*>(.*?)</text>', svg, re.S):
+        chars |= set(html.unescape(re.sub(r"<[^>]+>", "", m.group(1))))
+    css = _font_css(chars | {" "}) if chars else ""
+    path.write_text(svg.replace(FONT_SLOT, css), encoding="utf-8")
 
 
 def burst(cx, cy, r, points=12, fill=YELLOW, stroke=INK, sw=5, wobble=0.18, seed=1):

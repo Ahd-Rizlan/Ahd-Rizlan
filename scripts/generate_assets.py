@@ -9,7 +9,7 @@ import math
 import textwrap
 from html import escape
 
-from cartoon import (BLUE, COMIC, INK, MONO, RED, ROOT, THEMES, WHITE, YELLOW, burst, comic_text,
+from cartoon import (save, COMPACT, BLUE, COMIC, INK, MONO, RED, ROOT, THEMES, WHITE, YELLOW, burst, comic_text,
                      mascot, mini_spider, pill, shadow_box, style)
 
 OUT = ROOT / "assets"
@@ -22,7 +22,7 @@ def sunburst(cx, cy, color, n=22, r=1200):
         a1, a2 = math.pi * i / n, math.pi * (i + 1) / n
         wedges.append(f'<polygon points="{cx},{cy} {cx + r * math.cos(a1):.0f},{cy + r * math.sin(a1):.0f} '
                       f'{cx + r * math.cos(a2):.0f},{cy + r * math.sin(a2):.0f}"/>')
-    return f'<g fill="{color}" class="spin" style="transform-origin:{cx}px {cy}px">{"".join(wedges)}</g>'
+    return f'<g fill="{color}" >{"".join(wedges)}</g>'
 
 
 def skyline(t, w, base):
@@ -37,7 +37,7 @@ def skyline(t, w, base):
         for wy in range(y + 16, base - 10, 26):
             for wx in range(x + 12, x + bw - 16, 22):
                 if (wx * 7 + wy * 3 + i) % 5 < 2:
-                    out.append(f'<rect x="{wx}" y="{wy}" width="10" height="12" rx="2" fill="{t["window"]}" class="win" '
+                    out.append(f'<rect x="{wx}" y="{wy}" width="10" height="12" rx="2" fill="{t["window"]}" '
                                f'style="animation-delay:{(wx + wy) % 7 * 0.6:.1f}s"/>')
         x += bw - 4
         i += 1
@@ -77,26 +77,22 @@ def banner(mode):
     t = THEMES[mode]
     w, h = 1200, 420
     css = style(
-        ".spin { animation: spin 60s linear infinite; }",
-        "@keyframes spin { to { transform: rotate(360deg); } }",
         ".bob { animation: bob 2.6s ease-in-out infinite alternate; }",
         "@keyframes bob { from { transform: translate(1010px, 205px) rotate(-3deg); } to { transform: translate(1010px, 235px) rotate(3deg); } }",
-        ".wobble { animation: wobble 3s ease-in-out infinite alternate; transform-origin: 320px 250px; }",
+        ".wobble { animation: wobble 1.2s ease-out 2 alternate both; transform-origin: 320px 250px; }",
         "@keyframes wobble { from { transform: rotate(-4deg); } to { transform: rotate(-2deg) scale(1.02); } }",
-        ".pow { animation: pow 1.6s ease-in-out infinite; }",
+        ".pow { animation: pow .8s ease-out 3 both; }",
         "@keyframes pow { 0%,100% { transform: scale(1) rotate(-8deg); } 50% { transform: scale(1.12) rotate(4deg); } }",
-        ".twinkle { animation: tw 1.8s ease-in-out infinite; }",
-        "@keyframes tw { 0%,100% { transform: scale(.4); opacity: .3; } 50% { transform: scale(1); opacity: 1; } }",
-        ".win { animation: win 4.2s steps(1) infinite; }",
-        "@keyframes win { 0%,70% { opacity: 1; } 71%,100% { opacity: .25; } }",
+        ".twinkle { animation: tw .9s ease-out 3 alternate both; }",
+        "@keyframes tw { from { transform: scale(.4); opacity: .3; } to { transform: scale(1); opacity: 1; } }",
         ".gb { animation: gb 3.2s steps(1) infinite; } .gr { animation: gr 3.2s steps(1) infinite; }",
         "@keyframes gb { 0%,84%,100% { transform: translate(-7px,-3px); } 86% { transform: translate(-16px,4px); } 90% { transform: translate(6px,-6px); } }",
         "@keyframes gr { 0%,84%,100% { transform: translate(7px,3px); } 86% { transform: translate(14px,-4px); } 90% { transform: translate(-6px,6px); } }",
-        ".drip { animation: drip 3.5s ease-in infinite; transform-box: fill-box; transform-origin: top; }",
-        "@keyframes drip { 0% { transform: scaleY(.3); } 60%,100% { transform: scaleY(1); } }",
-        ".mist { animation: mist 1.2s ease-out infinite; }",
+        ".drip { animation: drip 1.6s ease-in 1 both; transform-box: fill-box; transform-origin: top; }",
+        "@keyframes drip { from { transform: scaleY(.3); } to { transform: scaleY(1); } }",
+        ".mist { animation: mist .8s ease-out 3 both; }",
         "@keyframes mist { 0% { opacity: 1; transform: translate(0,0); } 100% { opacity: 0; transform: translate(10px,-14px); } }",
-        ".bubble { animation: pop 2.6s ease-in-out infinite alternate; transform-origin: 770px 120px; }",
+        ".bubble { animation: pop .6s ease-out 2 alternate both; transform-origin: 770px 120px; }",
         "@keyframes pop { from { transform: scale(.96) rotate(2deg); } to { transform: scale(1.03) rotate(-1deg); } }",
     )
     return f'''<svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" viewBox="0 0 {w} {h}" role="img" aria-label="Cartoon banner: Ahamed Rizlan, software engineer from Sri Lanka. A cute spider in a hoodie, headphones and red sneakers hangs from a web holding a spray can and says Thwip, deployed. Graffiti tags cover the buildings.">
@@ -153,17 +149,26 @@ def caption(text, color=YELLOW, seed=1):
 </svg>'''
 
 
+def big_lines(text, x, y, size, width, fill, anchor="start", gap=None, stroke=None):
+    """Large comic lettering for the compact (phone) layouts."""
+    gap = gap or size * 1.08
+    st = f' stroke="{stroke}" stroke-width="{size // 8}" paint-order="stroke" stroke-linejoin="round"' if stroke else ""
+    return "".join(
+        f'<text x="{x}" y="{y + i * gap:.0f}" text-anchor="{anchor}" font-family="{COMIC}" font-size="{size}" '
+        f'letter-spacing="1" fill="{fill}"{st}>{escape(l)}</text>'
+        for i, l in enumerate(textwrap.wrap(text.upper(), width)[:2]))
+
+
 def divider(mode):
     t = THEMES[mode]
     return f'''<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="96" viewBox="0 0 1200 96" role="img" aria-label="Divider: a little spider bobbing on a web line">
-{style(".bob { animation: bob 1.8s ease-in-out infinite alternate; }",
-       "@keyframes bob { from { transform: translate(600px, 42px); } to { transform: translate(600px, 58px); } }")}
+{style()}
 <path d="M0,14 Q300,40 600,14 Q900,40 1200,14" fill="none" stroke="{t["thread"]}" stroke-width="3" stroke-dasharray="2 8" stroke-linecap="round" opacity="0.8"/>
-<g class="bob"><line x1="0" y1="-14" x2="0" y2="-70" stroke="{t["thread"]}" stroke-width="2.5"/><g transform="scale(1.5)">{mini_spider()}</g></g>
+<g transform="translate(600 50)"><line x1="0" y1="-14" x2="0" y2="-70" stroke="{t["thread"]}" stroke-width="2.5"/><g transform="scale(1.5)">{mini_spider()}</g></g>
 </svg>'''
 
 
-def card(mode, issue, title, desc, tags, status=None):
+def card(mode, issue, title, desc, tags, status=None, short=""):
     t = THEMES[mode]
     head = RED if int(issue) % 2 else BLUE
     lines = textwrap.wrap(desc, 44)[:3]
@@ -180,7 +185,7 @@ def card(mode, issue, title, desc, tags, status=None):
         stamp = (f'<g transform="rotate(-10 330 168)"><rect x="250" y="146" width="160" height="44" rx="8" fill="none" stroke="{RED}" stroke-width="4"/>'
                  f'<text x="330" y="179" text-anchor="middle" font-family="{COMIC}" font-size="28" letter-spacing="2" fill="{RED}">{escape(status)}</text></g>')
     return f'''<svg xmlns="http://www.w3.org/2000/svg" width="440" height="250" viewBox="0 0 440 250" role="img" aria-label="Issue {issue}: {escape(title)}. {escape(desc)}">
-{style()}
+{style(COMPACT)}
 <defs><clipPath id="c"><rect x="6" y="6" width="420" height="226" rx="22"/></clipPath></defs>
 {shadow_box(6, 6, 420, 226, t["panel"], r=22, off=9, sw=5)}
 <g clip-path="url(#c)"><rect x="6" y="6" width="420" height="68" fill="{head}"/></g>
@@ -189,9 +194,10 @@ def card(mode, issue, title, desc, tags, status=None):
 {comic_text(28, 56, escape(title.upper()), 36, WHITE, shadow=INK, off=4, sw=7)}
 {burst(384, 42, 40, points=10, wobble=0.1, fill=YELLOW, sw=4, seed=int(issue))}
 <text x="384" y="50" text-anchor="middle" font-family="{COMIC}" font-size="21" fill="{INK}">#{issue}</text>
-{desc_svg}
-{"".join(tag_svg)}
-{stamp}
+<g class="full">{desc_svg}{"".join(tag_svg)}{stamp}</g>
+<g class="compact">{big_lines(short, 28, 128, 40, 18, t["fg"])}
+<text x="28" y="214" font-family="{COMIC}" font-size="30" letter-spacing="1" fill="{YELLOW}" stroke="{INK}" stroke-width="5" paint-order="stroke">{escape(" · ".join(tags).upper())}</text>
+{f'<text x="410" y="214" text-anchor="end" font-family="{COMIC}" font-size="30" fill="{RED}">SECRET</text>' if status else ""}</g>
 </svg>'''
 
 
@@ -201,7 +207,7 @@ def avatar_uri(name):
     return f"data:{mime};base64,{base64.b64encode(data).decode()}"
 
 
-def team_card(mode, slug, title, role, desc, tags, current=False):
+def team_card(mode, slug, title, role, desc, tags, current=False, short=""):
     """Organization card: logo in a round comic frame, NOW! burst for the current job."""
     t = THEMES[mode]
     head = YELLOW if current else t["city"]
@@ -219,7 +225,7 @@ def team_card(mode, slug, title, role, desc, tags, current=False):
              f'<text x="384" y="56" text-anchor="middle" font-family="{COMIC}" font-size="26" letter-spacing="1" fill="{WHITE}" '
              f'stroke="{INK}" stroke-width="4" paint-order="stroke">NOW!</text></g>') if current else ""
     css = style(".pulse { animation: pulse 1.4s ease-in-out infinite; transform-origin: 384px 46px; }",
-                "@keyframes pulse { 50% { transform: scale(1.12) rotate(6deg); } }") if current else style()
+                "@keyframes pulse { 50% { transform: scale(1.12) rotate(6deg); } }", COMPACT) if current else style(COMPACT)
     return f'''<svg xmlns="http://www.w3.org/2000/svg" width="440" height="270" viewBox="0 0 440 270" role="img" aria-label="{escape(title)}: {escape(role)}. {escape(desc)}">
 {css}
 <defs>
@@ -235,24 +241,25 @@ def team_card(mode, slug, title, role, desc, tags, current=False):
 <image href="{avatar_uri(slug)}" x="28" y="28" width="68" height="68" clip-path="url(#logo)" preserveAspectRatio="xMidYMid slice"/>
 <circle cx="62" cy="62" r="36" fill="none" stroke="{INK}" stroke-width="5"/>
 {comic_text(114, 58, escape(title.upper()), 34, title_fill, shadow=INK, off=4, sw=7)}
-<text x="116" y="80" font-family="{COMIC}" font-size="17" letter-spacing="1" fill="{INK if current else BLUE}">{escape(role.upper())}</text>
-{desc_svg}
-{"".join(tag_svg)}
+<text class="full" x="116" y="80" font-family="{COMIC}" font-size="17" letter-spacing="1" fill="{INK if current else BLUE}">{escape(role.upper())}</text>
+<g class="full">{desc_svg}{"".join(tag_svg)}</g>
+<g class="compact">{big_lines(short, 28, 148, 38, 19, t["fg"])}
+<text x="28" y="234" font-family="{COMIC}" font-size="30" letter-spacing="1" fill="{YELLOW}" stroke="{INK}" stroke-width="5" paint-order="stroke">{escape(" · ".join(tags).upper())}</text></g>
 {badge}
 </svg>'''
 
 
 TEAMS = [
     ("Pacto-Code", "Pacto Code", "Org admin",
-     "Dev studio work: portfolios, digital vCards and sites for Blinksky Productions.", ["TypeScript", "React"], False),
+     "Dev studio work: portfolios, digital vCards and sites for Blinksky Productions.", ["TypeScript", "React"], False, "Studio work for Blinksky"),
     ("SGDP-group", "SGDP Group", "Org admin",
-     "FocusFrame: gaze tracking, an AI focus agent, a smart desk clock and a mobile app.", ["Python", "Java", "C"], False),
+     "FocusFrame: gaze tracking, an AI focus agent, a smart desk clock and a mobile app.", ["Python", "Java", "C"], False, "FocusFrame focus tracker"),
     ("AssuraSolutions", "Assura Solutions", "Member",
-     "Client builds: logistics platforms and e-commerce storefronts.", ["TypeScript", "Next.js"], False),
+     "Client builds: logistics platforms and e-commerce storefronts.", ["TypeScript", "Next.js"], False, "Logistics and store builds"),
 ]
 
 
-def fact_panel(mode, n, question, answer, color):
+def fact_panel(mode, n, question, answer, color, short=""):
     """Comic panel: question in a caption box, Webby answering in a speech bubble."""
     t = THEMES[mode]
     lines = textwrap.wrap(answer, 27)[:6]
@@ -263,8 +270,7 @@ def fact_panel(mode, n, question, answer, color):
         for i, l in enumerate(lines))
     bubble = "M176,74 Q176,58 192,58 L404,58 Q420,58 420,74 L420,226 Q420,242 404,242 L192,242 Q176,242 176,226 L176,170 L148,184 L176,146 Z"
     return f'''<svg xmlns="http://www.w3.org/2000/svg" width="440" height="270" viewBox="0 0 440 270" role="img" aria-label="{escape(question)} {escape(answer)}">
-{style(".bob { animation: bob 2.4s ease-in-out infinite alternate; }",
-       f"@keyframes bob {{ from {{ transform: translate(80px, 170px) scale(.62) rotate(-4deg); }} to {{ transform: translate(80px, 180px) scale(.62) rotate(4deg); }} }}")}
+{style(COMPACT)}
 <defs>
   <clipPath id="c"><rect x="6" y="6" width="420" height="246" rx="22"/></clipPath>
   <pattern id="d" width="12" height="12" patternUnits="userSpaceOnUse"><circle cx="6" cy="6" r="2" fill="{RED}" opacity="0.3"/></pattern>
@@ -272,36 +278,43 @@ def fact_panel(mode, n, question, answer, color):
 {shadow_box(6, 6, 420, 246, t["panel"], r=22, off=9, sw=5)}
 <g clip-path="url(#c)">
   <rect x="6" y="6" width="420" height="246" fill="url(#d)"/>
-  <g class="bob">{mascot(t["thread"], thread_len=300)}</g>
+  <g class="full" transform="translate(80 175) scale(.62) rotate(-3)">{mascot(t["thread"], thread_len=300)}</g>
 </g>
 <rect x="6" y="6" width="420" height="246" rx="22" fill="none" stroke="{INK}" stroke-width="5"/>
+<g class="full">
 <g transform="rotate(-2 120 30)">{shadow_box(18, 14, 26 + 12.5 * len(question), 38, color, r=8, off=4, sw=4)}
 <text x="{31 + 6.25 * len(question):.0f}" y="41" text-anchor="middle" font-family="{COMIC}" font-size="23" letter-spacing="1" fill="{INK}">{escape(question.upper())}</text></g>
 <path d="{bubble}" fill="{INK}" transform="translate(6 6)"/>
 <path d="{bubble}" fill="{WHITE}" stroke="{INK}" stroke-width="4.5" stroke-linejoin="round"/>
 {text}
 <text x="404" y="18" text-anchor="end" font-family="{COMIC}" font-size="16" fill="{t["muted"]}">#{n}</text>
+</g>
+<g class="compact">
+{big_lines(question, 28, 66, 38, 19, color, stroke=INK)}
+{shadow_box(24, 118, 384, 114, WHITE, r=18, off=6, sw=4)}
+{big_lines(short, 216, 166, 34, 20, INK, anchor="middle", gap=40)}
+</g>
 </svg>'''
 
 
 FACTS = [
-    ("Favourite language?", "Can't pick just one. Every language is a new universe, and each one hands me a new superpower.", YELLOW),
-    ("Proudest project?", "The one fighting back right now. Every project throws a new villain at me, and I swing out with fresh ideas and sharper skills.", BLUE),
-    ("Currently learning?", "Everything the world is willing to teach me. The syllabus never ends, and that's the fun part.", RED),
-    ("Off the keyboard?", "Smashing boundaries on the cricket pitch, or lost in a playlist with the volume all the way up.", YELLOW),
-    ("Fave Spider-Verse moment?", "Miles deciding he's gonna do his own thing. That's exactly the energy I bring to every line of code.", BLUE),
+    ("Favourite language?", "Can't pick just one. Every language is a new universe, and each one hands me a new superpower.", YELLOW, "Every language is a new universe"),
+    ("Proudest project?", "The one fighting back right now. Every project throws a new villain at me, and I swing out with fresh ideas and sharper skills.", BLUE, "The one fighting back right now"),
+    ("Currently learning?", "Everything the world is willing to teach me. The syllabus never ends, and that's the fun part.", RED, "Everything the world will teach me"),
+    ("Off the keyboard?", "Smashing boundaries on the cricket pitch, or lost in a playlist with the volume all the way up.", YELLOW, "Cricket pitch and loud playlists"),
+    ("Fave Spider-Verse moment?", "Miles deciding he's gonna do his own thing. That's exactly the energy I bring to every line of code.", BLUE, "Miles doing his own thing"),
 ]
 
 
 MISSIONS = [
-    ("01", "Ember", "My current main build. Fresh repo, the story is still being written.", ["JavaScript"], None),
-    ("02", "Web Automations", "Test automation framework for a banking web application.", ["Java", "Selenium"], None),
-    ("03", "Ticketing Sim", "Real-time event ticketing simulation with producers and consumers.", ["Angular", "TypeScript"], None),
-    ("04", "Game AI", "Unity game AI coursework: agent behaviours, steering and shaders.", ["C#", "Unity", "HLSL"], None),
-    ("05", "Machine Learning", "Notebooks and experiments: models, data wrangling and evaluation.", ["Python", "Jupyter"], None),
-    ("06", "Property Finder", "Responsive single-page property search app with filters and favourites.", ["React", "JavaScript"], None),
-    ("07", "InfluencerHub", "Platform connecting brands with influencers. Live demo available.", ["JavaScript", "Vercel"], "TOP SECRET"),
-    ("08", "Nive Store", "Full e-commerce storefront with a Postgres backend.", ["Next.js", "Postgres"], "TOP SECRET"),
+    ("01", "Ember", "My current main build. Fresh repo, the story is still being written.", ["JavaScript"], None, "My current main build"),
+    ("02", "Web Automations", "Test automation framework for a banking web application.", ["Java", "Selenium"], None, "Banking app test automation"),
+    ("03", "Ticketing Sim", "Real-time event ticketing simulation with producers and consumers.", ["Angular", "TypeScript"], None, "Real-time ticketing sim"),
+    ("04", "Game AI", "Unity game AI coursework: agent behaviours, steering and shaders.", ["C#", "Unity", "HLSL"], None, "Unity game AI"),
+    ("05", "Machine Learning", "Notebooks and experiments: models, data wrangling and evaluation.", ["Python", "Jupyter"], None, "ML notebooks and experiments"),
+    ("06", "Property Finder", "Responsive single-page property search app with filters and favourites.", ["React", "JavaScript"], None, "Property search app"),
+    ("07", "InfluencerHub", "Platform connecting brands with influencers. Live demo available.", ["JavaScript", "Vercel"], "TOP SECRET", "Brands meet influencers"),
+    ("08", "Nive Store", "Full e-commerce storefront with a Postgres backend.", ["Next.js", "Postgres"], "TOP SECRET", "Full e-commerce store"),
 ]
 
 CAPTIONS = {
@@ -323,16 +336,16 @@ def main():
     (OUT / "teams").mkdir(parents=True, exist_ok=True)
     (OUT / "facts").mkdir(parents=True, exist_ok=True)
     for mode in THEMES:
-        (OUT / f"banner-{mode}.svg").write_text(banner(mode), encoding="utf-8")
-        (OUT / f"divider-{mode}.svg").write_text(divider(mode), encoding="utf-8")
-        for issue, title, desc, tags, status in MISSIONS:
-            (OUT / "cards" / f"{issue}-{mode}.svg").write_text(card(mode, issue, title, desc, tags, status), encoding="utf-8")
-        for n, (question, answer, color) in enumerate(FACTS, 1):
-            (OUT / "facts" / f"{n:02}-{mode}.svg").write_text(fact_panel(mode, f"{n:02}", question, answer, color), encoding="utf-8")
-        for slug, title, role, desc, tags, current in TEAMS:
-            (OUT / "teams" / f"{slug}-{mode}.svg").write_text(team_card(mode, slug, title, role, desc, tags, current), encoding="utf-8")
+        save(OUT / f"banner-{mode}.svg", banner(mode))
+        save(OUT / f"divider-{mode}.svg", divider(mode))
+        for issue, title, desc, tags, status, short in MISSIONS:
+            save(OUT / "cards" / f"{issue}-{mode}.svg", card(mode, issue, title, desc, tags, status, short))
+        for n, (question, answer, color, short) in enumerate(FACTS, 1):
+            save(OUT / "facts" / f"{n:02}-{mode}.svg", fact_panel(mode, f"{n:02}", question, answer, color, short))
+        for slug, title, role, desc, tags, current, short in TEAMS:
+            save(OUT / "teams" / f"{slug}-{mode}.svg", team_card(mode, slug, title, role, desc, tags, current, short))
     for i, (key, text) in enumerate(CAPTIONS.items()):
-        (OUT / "captions" / f"{key}.svg").write_text(caption(text, seed=i + 1), encoding="utf-8")
+        save(OUT / "captions" / f"{key}.svg", caption(text, seed=i + 1))
     print(f"Wrote assets to {OUT}")
 
 

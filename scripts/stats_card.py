@@ -10,7 +10,7 @@ import urllib.request
 from html import escape
 from pathlib import Path
 
-from cartoon import BLUE, COMIC, INK, MONO, PINK, RED, THEMES, WHITE, YELLOW, burst, comic_text, shadow_box, style
+from cartoon import save, BLUE, COMIC, INK, MONO, PINK, RED, THEMES, WHITE, YELLOW, burst, comic_text, shadow_box, style
 
 USER = os.environ.get("GITHUB_USER", "Ahd-Rizlan")
 TOKEN = os.environ["GITHUB_TOKEN"]
@@ -62,10 +62,10 @@ def stats_svg(mode, u):
                     f'<text x="268" y="{y + 1}" text-anchor="end" font-family="{COMIC}" font-size="24" letter-spacing="1" fill="{t["fg"]}">{val:,}</text>')
     total = sum(v for _, v in rows[:3])
     return f'''<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" viewBox="0 0 {W} {H}" role="img" aria-label="GitHub stats: {", ".join(f"{l} {v}" for l, v in rows)}">
-{style(".spin { animation: spin 8s linear infinite; transform-origin: 362px 156px; }", "@keyframes spin { to { transform: rotate(360deg); } }")}
+{style()}
 {frame(t, "THE STATS", RED)}
 {"".join(body)}
-<g class="spin">{burst(362, 156, 82, points=14, fill=YELLOW, sw=5, seed=3)}</g>
+<g>{burst(362, 156, 82, points=14, fill=YELLOW, sw=5, seed=3)}</g>
 {comic_text(362, 164, f"{total:,}", 38, RED, anchor="middle", sw=6, off=0)}
 <text x="362" y="188" text-anchor="middle" font-family="{COMIC}" font-size="15" letter-spacing="1" fill="{INK}">THIS YEAR</text>
 </svg>'''
@@ -108,8 +108,8 @@ def main():
     u = fetch()
     OUT.mkdir(parents=True, exist_ok=True)
     for mode in THEMES:
-        (OUT / f"stats-{mode}.svg").write_text(stats_svg(mode, u), encoding="utf-8")
-        (OUT / f"langs-{mode}.svg").write_text(langs_svg(mode, u), encoding="utf-8")
+        save(OUT / f"stats-{mode}.svg", stats_svg(mode, u))
+        save(OUT / f"langs-{mode}.svg", langs_svg(mode, u))
     print(f"wrote {OUT}/stats-*.svg and {OUT}/langs-*.svg")
 
 

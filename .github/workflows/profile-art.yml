@@ -19,6 +19,8 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+      - name: Install font tools
+        run: pip install fonttools==4.55.0
       - name: Draw graph and stats cards
         run: |
           python scripts/spider_graph.py
