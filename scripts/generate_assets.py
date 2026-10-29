@@ -119,7 +119,7 @@ def banner(mode):
     {burst(0, 0, 64, points=12, fill=YELLOW, sw=6)}
     {comic_text(0, 12, "POW!", 36, RED, anchor="middle", sw=6, off=0)}
   </g></g>
-  {pill(96, 352, "SOFTWARE ENGINEER · SRI LANKA · JAVA · REACT", BLUE, size=24)[0]}
+  {pill(96, 352, "SOFTWARE ENGINEER · SRI LANKA", BLUE, size=24)[0]}
   <g class="bubble">
     <path d="M640,56 Q640,34 662,34 L878,34 Q900,34 900,56 L900,126 Q900,148 878,148 L840,148 L930,196 L790,148 L662,148 Q640,148 640,126 Z" fill="{INK}" transform="translate(7 7)"/>
     <path d="M640,56 Q640,34 662,34 L878,34 Q900,34 900,56 L900,126 Q900,148 878,148 L840,148 L930,196 L790,148 L662,148 Q640,148 640,126 Z" fill="{WHITE}" stroke="{INK}" stroke-width="5" stroke-linejoin="round"/>

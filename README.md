@@ -1,7 +1,7 @@
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="assets/banner-dark.svg">
   <source media="(prefers-color-scheme: light)" srcset="assets/banner-light.svg">
-  <img alt="Ahamed Rizlan, software engineer from Sri Lanka: Java, React, Angular, automation" src="assets/banner-dark.svg" width="100%">
+  <img alt="Ahamed Rizlan, software engineer from Sri Lanka" src="assets/banner-dark.svg" width="100%">
 </picture>
 
 <p align="center">
