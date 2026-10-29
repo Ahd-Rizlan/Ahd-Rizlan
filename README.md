@@ -24,10 +24,10 @@ const rizlan = {
 };
 ``` -->
 
-<picture>
+<!-- <picture>
   <source media="(prefers-color-scheme: dark)" srcset="assets/divider-dark.svg">
   <img alt="" src="assets/divider-light.svg" width="100%">
-</picture>
+</picture> -->
 
 <img alt="Sptack" src="assets/captions/stack.svg" height="64">
 
@@ -57,10 +57,10 @@ const rizlan = {
   </picture>
 </p>
 
-<picture>
+<!-- <picture>
   <source media="(prefers-color-scheme: dark)" srcset="assets/divider-dark.svg">
   <img alt="" src="assets/divider-light.svg" width="100%">
-</picture>
+</picture> -->
 
 <img alt="Team-ups" src="assets/captions/teams.svg" height="64">
 
@@ -70,10 +70,10 @@ const rizlan = {
   <a href="https://github.com/AssuraSolutions"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/teams/AssuraSolutions-dark.svg"><img alt="Assura Solutions: member, client web builds" src="assets/teams/AssuraSolutions-light.svg" width="49%"></picture></a>
 </p>
 
-<picture>
+<!-- <picture>
   <source media="(prefers-color-scheme: dark)" srcset="assets/divider-dark.svg">
   <img alt="" src="assets/divider-light.svg" width="100%">
-</picture>
+</picture> -->
 
 <!-- <img alt="Pinned missions" src="assets/captions/missions.svg" height="64">
 
