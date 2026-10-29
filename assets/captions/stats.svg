@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="264" height="58" viewBox="0 0 264 58" role="img" aria-label="Power Levels">
+<g transform="rotate(1.2 132.0 29)">
+  <rect x="6" y="8" width="252" height="40" fill="#FFE14D" stroke="#0B0B0B" stroke-width="3"/>
+  <rect x="12" y="14" width="252" height="40" fill="none" stroke="#E23636" stroke-width="2" opacity="0.8"/>
+  <text x="132.0" y="37" text-anchor="middle" font-family="Impact, 'Arial Black', 'Helvetica Neue', sans-serif" font-size="22" letter-spacing="1.5" fill="#0B0B0B">POWER LEVELS</text>
+</g>
+</svg>

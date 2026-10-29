@@ -1,0 +1,106 @@
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="assets/banner-dark.svg">
+  <source media="(prefers-color-scheme: light)" srcset="assets/banner-light.svg">
+  <img alt="Ahamed Rizlan, software engineer: Java, React, Angular, automation" src="assets/banner-dark.svg" width="100%">
+</picture>
+
+<p align="center">
+  <img alt="Typing animation: full-stack developer, Java and Spring Boot, React and Angular, test automation, always shipping" src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=500&size=20&duration=2800&pause=900&color=00D4FF&center=true&vCenter=true&width=640&lines=%3E+miles.init()%3B;Full-stack+developer;Java+%2B+Spring+Boot;React+%2B+Angular;Test+automation+nerd;Always+shipping.">
+</p>
+
+<img alt="Meanwhile, in the terminal" src="assets/captions/about.svg" height="44">
+
+```js
+const rizlan = {
+  universe:  "Earth-1610 // full-stack division",
+  building:  ["web apps", "automation frameworks", "game AI"],
+  learning:  "system design and cloud",
+  powers:    ["clean UIs", "solid backends", "breaking things with tests"],
+  motto:     "Every leap starts with a git push.",
+};
+```
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="assets/divider-dark.svg">
+  <img alt="" src="assets/divider-light.svg" width="100%">
+</picture>
+
+<img alt="Spider-sense stack" src="assets/captions/stack.svg" height="44">
+
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://skillicons.dev/icons?i=java%2Cspring%2Cjs%2Cts%2Creact%2Cangular%2Cnextjs%2Chtml%2Ccss%2Ctailwind%2Cpython%2Ccs%2Cunity%2Cpostgres%2Cgit%2Cvercel&theme=dark&perline=8">
+    <img alt="Java, Spring, JavaScript, TypeScript, React, Angular, Next.js, HTML, CSS, Tailwind, Python, C#, Unity, Postgres, Git, Vercel" src="https://skillicons.dev/icons?i=java%2Cspring%2Cjs%2Cts%2Creact%2Cangular%2Cnextjs%2Chtml%2Ccss%2Ctailwind%2Cpython%2Ccs%2Cunity%2Cpostgres%2Cgit%2Cvercel&theme=light&perline=8">
+  </picture>
+</p>
+
+<img alt="Power levels" src="assets/captions/stats.svg" height="44">
+
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/Ahd-Rizlan/Ahd-Rizlan/output/stats-dark.svg">
+    <img alt="GitHub stats" width="49%" src="https://raw.githubusercontent.com/Ahd-Rizlan/Ahd-Rizlan/output/stats-light.svg">
+  </picture>
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/Ahd-Rizlan/Ahd-Rizlan/output/langs-dark.svg">
+    <img alt="Top languages" width="49%" src="https://raw.githubusercontent.com/Ahd-Rizlan/Ahd-Rizlan/output/langs-light.svg">
+  </picture>
+</p>
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://streak-stats.demolab.com?user=Ahd-Rizlan&hide_border=true&background=0B0B0B&ring=E23636&fire=00D4FF&currStreakNum=FFFFFF&sideNums=E23636&currStreakLabel=00D4FF&sideLabels=E6F6FF&dates=9FB3C8&stroke=333333">
+    <img alt="Contribution streak" src="https://streak-stats.demolab.com?user=Ahd-Rizlan&hide_border=true&background=F7F3EA&ring=E23636&fire=0096B4&currStreakNum=0B0B0B&sideNums=E23636&currStreakLabel=0096B4&sideLabels=0B0B0B&dates=4A5560&stroke=CCCCCC">
+  </picture>
+</p>
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="assets/divider-dark.svg">
+  <img alt="" src="assets/divider-light.svg" width="100%">
+</picture>
+
+<img alt="Pinned missions" src="assets/captions/missions.svg" height="44">
+
+<p align="center">
+  <a href="https://github.com/Ahd-Rizlan/Ember-Js"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/cards/01-dark.svg"><img alt="Issue 01: Ember" src="assets/cards/01-light.svg" width="49%"></picture></a>
+  <a href="https://github.com/Ahd-Rizlan/Web-Automations"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/cards/02-dark.svg"><img alt="Issue 02: Web Automations" src="assets/cards/02-light.svg" width="49%"></picture></a>
+  <a href="https://github.com/Ahd-Rizlan/ticketing_simulation-Angular"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/cards/03-dark.svg"><img alt="Issue 03: Ticketing simulation" src="assets/cards/03-light.svg" width="49%"></picture></a>
+  <a href="https://github.com/Ahd-Rizlan/GameAI-CW"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/cards/04-dark.svg"><img alt="Issue 04: Game AI" src="assets/cards/04-light.svg" width="49%"></picture></a>
+  <a href="https://github.com/Ahd-Rizlan/Machine-Learning"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/cards/05-dark.svg"><img alt="Issue 05: Machine learning" src="assets/cards/05-light.svg" width="49%"></picture></a>
+  <a href="https://github.com/Ahd-Rizlan/Property-Sell-Website-React-"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/cards/06-dark.svg"><img alt="Issue 06: Property finder" src="assets/cards/06-light.svg" width="49%"></picture></a>
+</p>
+
+<img alt="Classified files" src="assets/captions/classified.svg" height="44">
+
+<p align="center">
+  <a href="https://influencerhub-psi.vercel.app"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/cards/07-dark.svg"><img alt="Issue 07: InfluencerHub, private repo with live demo" src="assets/cards/07-light.svg" width="49%"></picture></a>
+  <picture><source media="(prefers-color-scheme: dark)" srcset="assets/cards/08-dark.svg"><img alt="Issue 08: Nive e-commerce, private repo" src="assets/cards/08-light.svg" width="49%"></picture>
+</p>
+
+<img alt="The web I've spun" src="assets/captions/web.svg" height="44">
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/Ahd-Rizlan/Ahd-Rizlan/output/spider-dark.svg">
+  <img alt="Contribution graph with a spider swinging across it" src="https://raw.githubusercontent.com/Ahd-Rizlan/Ahd-Rizlan/output/spider-light.svg" width="100%">
+</picture>
+
+<details>
+  <summary><b>Enter the Spider-Verse</b> (fun facts)</summary>
+  <br>
+
+  - My first commit was a Java CLI that I rewrote three times.
+  - I test my own code like a villain is waiting for it to fail.
+  - Favourite stack right now: Spring Boot on the back, React on the front.
+  - When I'm not coding: music on, headphones in.
+
+</details>
+
+<img alt="Signal the spider" src="assets/captions/contact.svg" height="44">
+
+<p>
+  <a href="https://github.com/Ahd-Rizlan"><img alt="GitHub" src="https://img.shields.io/badge/GitHub-Ahd--Rizlan-0B0B0B?style=for-the-badge&logo=github&labelColor=E23636"></a>
+  <!-- Add more once you share them, e.g. LinkedIn:
+  <a href="https://www.linkedin.com/in/YOUR-HANDLE"><img alt="LinkedIn" src="https://img.shields.io/badge/LinkedIn-connect-0B0B0B?style=for-the-badge&logo=linkedin&labelColor=00D4FF"></a>
+  -->
+</p>
+
+<sub>Original artwork inspired by the Spider-Verse look. Not affiliated with Marvel or Sony.</sub>

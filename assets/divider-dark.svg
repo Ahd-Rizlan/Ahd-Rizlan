@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="48" viewBox="0 0 1200 48" role="img" aria-label="Web line divider">
+<style>.shot { stroke-dasharray: 560; stroke-dashoffset: 560; animation: shoot 5s ease-out infinite; }
+@keyframes shoot { 0% { stroke-dashoffset: 560; } 30%,100% { stroke-dashoffset: 0; } }
+@media (prefers-reduced-motion: reduce) { .shot { animation: none; stroke-dashoffset: 0; } }</style>
+<path class="shot" d="M0,24 Q300,40 560,24" stroke="#FFFFFF" stroke-width="1.5" fill="none" opacity="0.6"/>
+<path class="shot" d="M1200,24 Q900,40 640,24" stroke="#FFFFFF" stroke-width="1.5" fill="none" opacity="0.6"/>
+<polygon points="600,4 610,16 626,12 618,24 630,34 612,32 600,44 590,32 572,34 582,24 574,12 590,16" fill="#E23636" stroke="#0B0B0B" stroke-width="2"/>
+<circle cx="600" cy="24" r="4" fill="#00D4FF"/>
+</svg>
