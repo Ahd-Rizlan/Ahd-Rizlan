@@ -3,14 +3,14 @@
 
 @media (prefers-reduced-motion: reduce) { * { animation: none !important; } }</style>
 <defs><clipPath id="c"><rect x="6" y="6" width="420" height="226" rx="22"/></clipPath></defs>
-<rect x="15" y="15" width="420" height="226" rx="22" fill="#0B0B0B"/><rect x="6" y="6" width="420" height="226" rx="22" fill="#221C45" stroke="#0B0B0B" stroke-width="5"/>
+<rect x="15" y="15" width="420" height="226" rx="22" fill="#0B0B0B"/><rect x="6" y="6" width="420" height="226" rx="22" fill="#1C1418" stroke="#0B0B0B" stroke-width="5"/>
 <g clip-path="url(#c)"><rect x="6" y="6" width="420" height="68" fill="#00D4FF"/></g>
 <line x1="6" y1="74" x2="426" y2="74" stroke="#0B0B0B" stroke-width="5"/>
 <rect x="6" y="6" width="420" height="226" rx="22" fill="none" stroke="#0B0B0B" stroke-width="5"/>
 <text x="32" y="60" font-family="Bangers, Impact, 'Arial Black', sans-serif" font-size="36" text-anchor="start" letter-spacing="1.2" stroke-linejoin="round" paint-order="stroke" fill="#0B0B0B" stroke="#0B0B0B" stroke-width="7">PROPERTY FINDER</text><text x="28" y="56" font-family="Bangers, Impact, 'Arial Black', sans-serif" font-size="36" text-anchor="start" letter-spacing="1.2" stroke-linejoin="round" paint-order="stroke" fill="#FFFFFF" stroke="#0B0B0B" stroke-width="7" >PROPERTY FINDER</text>
 <polygon points="384.0,2.7 392.4,16.2 405.7,12.1 403.7,27.7 425.6,28.5 406.9,42.0 421.5,54.2 405.9,57.9 405.7,71.8 391.6,65.3 384.0,85.7 376.9,63.7 360.8,74.0 362.1,57.9 349.0,53.4 359.4,42.0 342.5,28.5 365.6,28.6 360.7,9.9 375.6,16.3" fill="#FFE14D" stroke="#0B0B0B" stroke-width="4" stroke-linejoin="round"/>
 <text x="384" y="50" text-anchor="middle" font-family="Bangers, Impact, 'Arial Black', sans-serif" font-size="21" fill="#0B0B0B">#06</text>
-<text x="28" y="116" font-family="'Fira Code', Consolas, monospace" font-size="14" fill="#B9C6D6">Responsive single-page property search app</text><text x="28" y="138" font-family="'Fira Code', Consolas, monospace" font-size="14" fill="#B9C6D6">with filters and favourites.</text>
+<text x="28" y="116" font-family="'Fira Code', Consolas, monospace" font-size="14" fill="#C9B9BE">Responsive single-page property search app</text><text x="28" y="138" font-family="'Fira Code', Consolas, monospace" font-size="14" fill="#C9B9BE">with filters and favourites.</text>
 <rect x="29" y="181" width="72.5" height="31" rx="15.5" fill="#0B0B0B"/><rect x="26" y="178" width="72.5" height="31" rx="15.5" fill="#FFE14D" stroke="#0B0B0B" stroke-width="3"/><text x="62.2" y="198.9" text-anchor="middle" font-family="Bangers, Impact, 'Arial Black', sans-serif" font-size="15" letter-spacing="1" fill="#0B0B0B">REACT</text><rect x="113.5" y="181" width="119.0" height="31" rx="15.5" fill="#0B0B0B"/><rect x="110.5" y="178" width="119.0" height="31" rx="15.5" fill="#FFFFFF" stroke="#0B0B0B" stroke-width="3"/><text x="170.0" y="198.9" text-anchor="middle" font-family="Bangers, Impact, 'Arial Black', sans-serif" font-size="15" letter-spacing="1" fill="#0B0B0B">JAVASCRIPT</text>
 
 </svg>

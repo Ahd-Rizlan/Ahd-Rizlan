@@ -18,10 +18,10 @@ INK = "#0B0B0B"
 WHITE = "#FFFFFF"
 
 THEMES = {
-    "dark": {"bg": "#14102A", "ray": "#1E1840", "fg": WHITE, "muted": "#B9C6D6", "panel": "#221C45",
-             "city": "#0B0820", "window": YELLOW, "dot": RED, "shadow": INK, "thread": WHITE},
-    "light": {"bg": "#FFF4D6", "ray": "#FFE7A3", "fg": INK, "muted": "#4A4560", "panel": WHITE,
-              "city": "#3B2F6B", "window": YELLOW, "dot": RED, "shadow": INK, "thread": INK},
+    "dark": {"bg": "#0F0B0E", "ray": "#22090D", "fg": WHITE, "muted": "#C9B9BE", "panel": "#1C1418",
+             "city": "#1A1216", "window": RED, "dot": RED, "shadow": INK, "thread": WHITE},
+    "light": {"bg": "#FFF4E8", "ray": "#FFD9D4", "fg": INK, "muted": "#4A3F45", "panel": WHITE,
+              "city": "#2A2126", "window": YELLOW, "dot": RED, "shadow": INK, "thread": INK},
 }
 
 COMIC = "Bangers, Impact, 'Arial Black', sans-serif"
@@ -75,10 +75,23 @@ def pill(x, y, text, fill, fg=INK, size=16, off=4):
             f'font-size="{size}" letter-spacing="1" fill="{fg}">{text}</text>'), w
 
 
-def mascot(thread=WHITE, thread_len=600):
-    """Webby: an original cute spider with big eyes and blue headphones.
+HOODIE = "#2B2B33"
 
-    Drawn around (0, 0), body radius ~48. Includes the web thread going up.
+
+def sneaker(x, y, flip=1):
+    """Red high-top on a leg tip."""
+    s = flip
+    return (f'<g transform="translate({x} {y}) scale({s} 1)">'
+            f'<path d="M-8,-14 L4,-14 L6,-2 Q20,0 22,8 L22,12 L-10,12 Z" fill="{RED}" stroke="{INK}" stroke-width="4" stroke-linejoin="round"/>'
+            f'<rect x="-11" y="10" width="35" height="7" rx="3" fill="{WHITE}" stroke="{INK}" stroke-width="3.5"/>'
+            f'<path d="M-4,-8 L4,-6 M-3,-2 L6,0" stroke="{WHITE}" stroke-width="2.5" stroke-linecap="round"/></g>')
+
+
+def mascot(thread=WHITE, thread_len=600):
+    """Webby: an original cute spider in streetwear.
+
+    Hoodie, blue headphones, red high-tops and a spray can. Drawn around
+    (0, 0), body radius ~48. Includes the web thread going up.
     """
     legs = []
     for side in (-1, 1):
@@ -90,9 +103,20 @@ def mascot(thread=WHITE, thread_len=600):
     return f'''<g>
   <line x1="0" y1="-44" x2="0" y2="{-thread_len}" stroke="{thread}" stroke-width="3"/>
   <g fill="none" stroke="{INK}" stroke-width="8" stroke-linecap="round">{"".join(legs)}</g>
-  <ellipse cx="6" cy="10" rx="50" ry="48" fill="{INK}"/>
-  <ellipse cx="0" cy="4" rx="50" ry="48" fill="{RED}" stroke="{INK}" stroke-width="6"/>
-  <ellipse cx="-16" cy="-22" rx="14" ry="8" fill="{WHITE}" opacity="0.35" transform="rotate(-25 -16 -22)"/>
+  {sneaker(-80, 60, -1)}{sneaker(80, 60, 1)}
+  <g transform="translate(96 -30) rotate(18)">
+    <rect x="-10" y="-22" width="20" height="40" rx="5" fill="{BLUE}" stroke="{INK}" stroke-width="4"/>
+    <rect x="-10" y="-8" width="20" height="9" fill="{YELLOW}" stroke="{INK}" stroke-width="3"/>
+    <rect x="-5" y="-32" width="10" height="10" rx="2" fill="{WHITE}" stroke="{INK}" stroke-width="3"/>
+    <g fill="{RED}" class="mist"><circle cx="10" cy="-44" r="4"/><circle cx="20" cy="-52" r="3"/><circle cx="4" cy="-56" r="2.5"/><circle cx="24" cy="-40" r="2"/></g>
+  </g>
+  <path d="M-56,20 Q-62,-62 0,-70 Q62,-62 56,20 Q40,64 0,64 Q-40,64 -56,20 Z" fill="{INK}" transform="translate(6 6)"/>
+  <path d="M-56,20 Q-62,-62 0,-70 Q62,-62 56,20 Q40,64 0,64 Q-40,64 -56,20 Z" fill="{HOODIE}" stroke="{INK}" stroke-width="6" stroke-linejoin="round"/>
+  <ellipse cx="0" cy="4" rx="44" ry="44" fill="{RED}" stroke="{INK}" stroke-width="5"/>
+  <path d="M-30,40 Q0,52 30,40 L26,64 L-26,64 Z" fill="{HOODIE}" stroke="{INK}" stroke-width="5" stroke-linejoin="round"/>
+  <g stroke="{RED}" stroke-width="4" stroke-linecap="round"><path d="M-14,44 L-16,74"/><path d="M14,44 L16,74"/></g>
+  <circle cx="-16" cy="76" r="4" fill="{WHITE}" stroke="{INK}" stroke-width="2.5"/><circle cx="16" cy="76" r="4" fill="{WHITE}" stroke="{INK}" stroke-width="2.5"/>
+  <ellipse cx="-16" cy="-22" rx="12" ry="7" fill="{WHITE}" opacity="0.35" transform="rotate(-25 -16 -22)"/>
   <path d="M-58,4 Q-58,-72 0,-72 Q58,-72 58,4" fill="none" stroke="{INK}" stroke-width="16" stroke-linecap="round"/>
   <path d="M-58,4 Q-58,-72 0,-72 Q58,-72 58,4" fill="none" stroke="{BLUE}" stroke-width="8" stroke-linecap="round"/>
   <rect x="-70" y="-14" width="22" height="34" rx="10" fill="{BLUE}" stroke="{INK}" stroke-width="5"/>

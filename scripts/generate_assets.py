@@ -50,6 +50,28 @@ def sparkle(x, y, s, delay):
             f'fill="{YELLOW}" stroke="{INK}" stroke-width="3" stroke-linejoin="round"/>')
 
 
+def drips(color, base, xs):
+    """Spray-paint drips hanging off a line of lettering."""
+    out = []
+    for i, x in enumerate(xs):
+        ln = 22 + (i * 17) % 26
+        out.append(f'<path class="drip" style="animation-delay:{i * .5:.1f}s" d="M{x - 6},{base - 8} L{x - 5},{base + ln} '
+                   f'a6,6 0 0 0 12,0 L{x + 6},{base - 8} Z" fill="{color}" stroke="{INK}" stroke-width="3.5" stroke-linejoin="round"/>')
+    return "".join(out)
+
+
+def graffiti():
+    """Tags sprayed on the buildings."""
+    tags = [(770, 402, "BK", BLUE, -8, 30), (836, 396, "1610", YELLOW, 6, 24), (912, 404, "THWIP", RED, -5, 26),
+            (34, 404, "W!", YELLOW, -10, 28), (1130, 400, "NYC", BLUE, 7, 22)]
+    out = []
+    for x, y, text, col, rot, size in tags:
+        out.append(f'<g transform="rotate({rot} {x} {y})">{comic_text(x, y, text, size, col, anchor="middle", sw=5, off=0)}</g>')
+    splats = [(800, 372, 5, RED), (880, 368, 3, BLUE), (950, 376, 4, YELLOW), (60, 372, 4, BLUE)]
+    out += [f'<circle cx="{x}" cy="{y}" r="{r}" fill="{c}"/>' for x, y, r, c in splats]
+    return "".join(out)
+
+
 def banner(mode):
     t = THEMES[mode]
     w, h = 1200, 420
@@ -66,10 +88,17 @@ def banner(mode):
         "@keyframes tw { 0%,100% { transform: scale(.4); opacity: .3; } 50% { transform: scale(1); opacity: 1; } }",
         ".win { animation: win 4.2s steps(1) infinite; }",
         "@keyframes win { 0%,70% { opacity: 1; } 71%,100% { opacity: .25; } }",
+        ".gb { animation: gb 3.2s steps(1) infinite; } .gr { animation: gr 3.2s steps(1) infinite; }",
+        "@keyframes gb { 0%,84%,100% { transform: translate(-7px,-3px); } 86% { transform: translate(-16px,4px); } 90% { transform: translate(6px,-6px); } }",
+        "@keyframes gr { 0%,84%,100% { transform: translate(7px,3px); } 86% { transform: translate(14px,-4px); } 90% { transform: translate(-6px,6px); } }",
+        ".drip { animation: drip 3.5s ease-in infinite; transform-box: fill-box; transform-origin: top; }",
+        "@keyframes drip { 0% { transform: scaleY(.3); } 60%,100% { transform: scaleY(1); } }",
+        ".mist { animation: mist 1.2s ease-out infinite; }",
+        "@keyframes mist { 0% { opacity: 1; transform: translate(0,0); } 100% { opacity: 0; transform: translate(10px,-14px); } }",
         ".bubble { animation: pop 2.6s ease-in-out infinite alternate; transform-origin: 770px 120px; }",
         "@keyframes pop { from { transform: scale(.96) rotate(2deg); } to { transform: scale(1.03) rotate(-1deg); } }",
     )
-    return f'''<svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" viewBox="0 0 {w} {h}" role="img" aria-label="Cartoon banner: Ahamed Rizlan, software engineer. A cute spider with headphones hangs from a web and says Thwip, deployed.">
+    return f'''<svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" viewBox="0 0 {w} {h}" role="img" aria-label="Cartoon banner: Ahamed Rizlan, software engineer. A cute spider in a hoodie, headphones and red sneakers hangs from a web holding a spray can and says Thwip, deployed. Graffiti tags cover the buildings.">
 {css}
 <defs>
   <clipPath id="frame"><rect x="6" y="6" width="{w - 12}" height="{h - 12}" rx="28"/></clipPath>
@@ -81,9 +110,13 @@ def banner(mode):
   <rect x="0" y="0" width="260" height="{h}" fill="url(#dots)"/>
   <rect x="940" y="0" width="260" height="{h}" fill="url(#dots)"/>
   {skyline(t, w, h)}
+  {graffiti()}
   <g class="wobble">
+    <g class="gb">{comic_text(84, 214, "AHAMED", 156, BLUE, sw=0, off=0)}{comic_text(150, 336, "RIZLAN", 156, BLUE, sw=0, off=0)}</g>
+    <g class="gr">{comic_text(84, 214, "AHAMED", 156, RED, sw=0, off=0)}{comic_text(150, 336, "RIZLAN", 156, YELLOW, sw=0, off=0)}</g>
     {comic_text(84, 214, "AHAMED", 156, YELLOW, shadow=INK, off=8, sw=12)}
     {comic_text(150, 336, "RIZLAN", 156, RED, shadow=INK, off=8, sw=12)}
+    {drips(RED, 336, [176, 232, 300, 352, 418])}
   </g>
   <g transform="translate(96 88)"><g class="pow">
     {burst(0, 0, 64, points=12, fill=YELLOW, sw=6)}

@@ -48,7 +48,7 @@ const rizlan = {
 </p>
 <p align="center">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://streak-stats.demolab.com?user=Ahd-Rizlan&background=221C45&border=0B0B0B&ring=E23636&fire=FFE14D&currStreakNum=FFFFFF&sideNums=FFE14D&currStreakLabel=00D4FF&sideLabels=FFFFFF&dates=B9C6D6&stroke=0B0B0B&border_radius=22">
+    <source media="(prefers-color-scheme: dark)" srcset="https://streak-stats.demolab.com?user=Ahd-Rizlan&background=1C1418&border=0B0B0B&ring=E23636&fire=FFE14D&currStreakNum=FFFFFF&sideNums=FFE14D&currStreakLabel=00D4FF&sideLabels=FFFFFF&dates=C9B9BE&stroke=0B0B0B&border_radius=22">
     <img alt="Contribution streak" src="https://streak-stats.demolab.com?user=Ahd-Rizlan&background=FFFFFF&border=0B0B0B&ring=E23636&fire=E23636&currStreakNum=0B0B0B&sideNums=E23636&currStreakLabel=0096B4&sideLabels=0B0B0B&dates=4A4560&stroke=0B0B0B&border_radius=22">
   </picture>
 </p>
