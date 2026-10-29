@@ -1,22 +1,23 @@
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="assets/banner-dark.svg">
   <source media="(prefers-color-scheme: light)" srcset="assets/banner-light.svg">
-  <img alt="Ahamed Rizlan, software engineer: Java, React, Angular, automation" src="assets/banner-dark.svg" width="100%">
+  <img alt="Ahamed Rizlan, software engineer from Sri Lanka: Java, React, Angular, automation" src="assets/banner-dark.svg" width="100%">
 </picture>
 
 <p align="center">
-  <img alt="Typing animation: full-stack developer, Java and Spring Boot, React and Angular, test automation, always shipping" src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=500&size=20&duration=2800&pause=900&color=E23636&center=true&vCenter=true&width=640&lines=%3E+miles.init()%3B;Full-stack+developer;Java+%2B+Spring+Boot;React+%2B+Angular;Test+automation+nerd;Always+shipping.">
+  <img alt="Typing animation: software engineer from Sri Lanka, Java and Spring Boot, React and Angular, every language teaches something new" src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=500&size=20&duration=2800&pause=900&color=E23636&center=true&vCenter=true&width=640&lines=%3E+miles.init()%3B;Software+engineer+from+Sri+Lanka;Java+%2B+Spring+Boot;React+%2B+Angular;Every+language+teaches+me+something+new.">
 </p>
 
 <img alt="Meanwhile, in the terminal" src="assets/captions/about.svg" height="64">
 
 ```js
 const rizlan = {
-  universe:  "Earth-1610 // full-stack division",
+  role:      "Software engineer",
+  basedIn:   "Sri Lanka",
   building:  ["web apps", "automation frameworks", "game AI"],
-  learning:  "system design and cloud",
-  powers:    ["clean UIs", "solid backends", "breaking things with tests"],
-  motto:     "Every leap starts with a git push.",
+  learning:  "the world",
+  offline:   ["cricket", "music"],
+  motto:     "I'm gonna do my own thing.",
 };
 ```
 
@@ -100,10 +101,11 @@ const rizlan = {
   <summary><b>Enter the Spider-Verse</b> (fun facts)</summary>
   <br>
 
-  - My first commit was a Java CLI that I rewrote three times.
-  - I test my own code like a villain is waiting for it to fail.
-  - Favourite stack right now: Spring Boot on the back, React on the front.
-  - When I'm not coding: music on, headphones in.
+  - **Favourite language:** all of them. Every language teaches me something new.
+  - **Proudest project:** whichever one is challenging me right now. Every project brings new ideas.
+  - **Currently learning:** the world.
+  - **Off the keyboard:** cricket and music.
+  - **Favourite Spider-Verse moment:** when Miles decides to do his own thing. Same energy.
 
 </details>
 

@@ -98,7 +98,7 @@ def banner(mode):
         ".bubble { animation: pop 2.6s ease-in-out infinite alternate; transform-origin: 770px 120px; }",
         "@keyframes pop { from { transform: scale(.96) rotate(2deg); } to { transform: scale(1.03) rotate(-1deg); } }",
     )
-    return f'''<svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" viewBox="0 0 {w} {h}" role="img" aria-label="Cartoon banner: Ahamed Rizlan, software engineer. A cute spider in a hoodie, headphones and red sneakers hangs from a web holding a spray can and says Thwip, deployed. Graffiti tags cover the buildings.">
+    return f'''<svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" viewBox="0 0 {w} {h}" role="img" aria-label="Cartoon banner: Ahamed Rizlan, software engineer from Sri Lanka. A cute spider in a hoodie, headphones and red sneakers hangs from a web holding a spray can and says Thwip, deployed. Graffiti tags cover the buildings.">
 {css}
 <defs>
   <clipPath id="frame"><rect x="6" y="6" width="{w - 12}" height="{h - 12}" rx="28"/></clipPath>
@@ -122,7 +122,7 @@ def banner(mode):
     {burst(0, 0, 64, points=12, fill=YELLOW, sw=6)}
     {comic_text(0, 12, "POW!", 36, RED, anchor="middle", sw=6, off=0)}
   </g></g>
-  {pill(96, 352, "SOFTWARE ENGINEER · JAVA · REACT · ANGULAR", BLUE, size=24)[0]}
+  {pill(96, 352, "SOFTWARE ENGINEER · SRI LANKA · JAVA · REACT", BLUE, size=24)[0]}
   <g class="bubble">
     <path d="M640,56 Q640,34 662,34 L878,34 Q900,34 900,56 L900,126 Q900,148 878,148 L840,148 L930,196 L790,148 L662,148 Q640,148 640,126 Z" fill="{INK}" transform="translate(7 7)"/>
     <path d="M640,56 Q640,34 662,34 L878,34 Q900,34 900,56 L900,126 Q900,148 878,148 L840,148 L930,196 L790,148 L662,148 Q640,148 640,126 Z" fill="{WHITE}" stroke="{INK}" stroke-width="5" stroke-linejoin="round"/>
