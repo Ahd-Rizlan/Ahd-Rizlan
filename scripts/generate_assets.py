@@ -289,7 +289,7 @@ MISSIONS = [
 
 CAPTIONS = {
     "about": "MEANWHILE, IN THE TERMINAL...",
-    "stack": "SPIDER-SENSE STACK",
+    "stack": "STACKS",
     "stats": "POWER LEVELS",
     "missions": "PINNED MISSIONS",
     "classified": "CLASSIFIED FILES",

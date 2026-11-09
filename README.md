@@ -29,7 +29,7 @@ const rizlan = {
   <img alt="" src="assets/divider-light.svg" width="100%">
 </picture> -->
 
-<img alt="Sptack" src="assets/captions/stack.svg" height="64">
+<img alt="Stacks" src="assets/captions/stack.svg" height="64">
 
 <p align="center">
   <picture>
