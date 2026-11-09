@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
   push:
     branches: [main]
-    paths: [scripts/spider_graph.py]
+    paths: [scripts/spider_graph.py, scripts/stats_card.py, scripts/cartoon.py]
 
 permissions:
   contents: write

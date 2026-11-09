@@ -65,9 +65,9 @@ const rizlan = {
 <img alt="Team-ups" src="assets/captions/teams.svg" height="64">
 
 <p align="center">
-  <a href="https://github.com/Pacto-Code"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/teams/Pacto-Code-dark.svg"><img alt="Pacto Code: org admin, dev studio work" src="assets/teams/Pacto-Code-light.svg" width="49%"></picture></a>
-  <a href="https://github.com/SGDP-group"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/teams/SGDP-group-dark.svg"><img alt="SGDP Group: org admin, FocusFrame focus tracking project" src="assets/teams/SGDP-group-light.svg" width="49%"></picture></a>
-  <a href="https://github.com/AssuraSolutions"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/teams/AssuraSolutions-dark.svg"><img alt="Assura Solutions: member, client web builds" src="assets/teams/AssuraSolutions-light.svg" width="49%"></picture></a>
+  <a href="https://github.com/Pacto-Code" title="Pacto Code"><img src="assets/teams/Pacto-Code.svg" alt="Pacto Code" title="Pacto Code" width="96"></a>
+  <a href="https://github.com/SGDP-group" title="SGDP Group"><img src="assets/teams/SGDP-group.svg" alt="SGDP Group" title="SGDP Group" width="96"></a>
+  <a href="https://github.com/AssuraSolutions" title="Assura Solutions"><img src="assets/teams/AssuraSolutions.svg" alt="Assura Solutions" title="Assura Solutions" width="96"></a>
 </p>
 
 <!-- <picture>

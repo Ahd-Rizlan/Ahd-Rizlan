@@ -105,6 +105,43 @@ def comic_text(x, y, text, size, fill, anchor="start", stroke=INK, sw=None, shad
     return out
 
 
+ODOMETER_CSS = (".odo { animation: roll 1.6s cubic-bezier(.2, .8, .2, 1) backwards; }",
+                "@keyframes roll { from { transform: translateY(0); } }")
+
+
+def odometer(x, y, value, size, fill, uid, anchor="end", delay=0.0, stroke=None):
+    """A number whose digits roll up from 0 when the image loads.
+
+    Each digit is a 0-9 strip behind a clip; its resting transform shows the
+    real digit, so with reduced motion the final number simply appears.
+    Needs ODOMETER_CSS in the image's style().
+    """
+    text = f"{value:,}"
+    dw, cw, lh = size * 0.5, size * 0.26, size * 1.15
+    width = sum(cw if ch == "," else dw for ch in text)
+    x0 = x - width if anchor == "end" else x - width / 2 if anchor == "middle" else x
+    st = (f' stroke="{stroke}" stroke-width="{size // 7}" paint-order="stroke" stroke-linejoin="round"'
+          if stroke else "")
+    out = [f'<defs><clipPath id="odo{uid}"><rect x="{x0 - 6:.1f}" y="{y - size * 0.92:.1f}" '
+           f'width="{width + 12:.1f}" height="{size * 1.18:.1f}"/></clipPath></defs><g clip-path="url(#odo{uid})">']
+    cx, k = x0, 0
+    for ch in text:
+        if ch == ",":
+            out.append(f'<text x="{cx + cw / 2:.1f}" y="{y}" text-anchor="middle" font-family="{COMIC}" '
+                       f'font-size="{size}" fill="{fill}"{st}>,</text>')
+            cx += cw
+            continue
+        shift = int(ch) * lh
+        strip = "".join(f'<text x="{cx + dw / 2:.1f}" y="{y + n * lh:.1f}" text-anchor="middle" font-family="{COMIC}" '
+                        f'font-size="{size}" fill="{fill}"{st}>{n}</text>' for n in range(10))
+        out.append(f'<g class="odo" style="transform: translateY(-{shift:.1f}px); animation-delay: {delay + k * 0.09:.2f}s">'
+                   f'{strip}</g>')
+        cx += dw
+        k += 1
+    out.append("</g>")
+    return "".join(out)
+
+
 def pill(x, y, text, fill, fg=INK, size=16, off=4):
     w = size * 0.62 * len(text) + 26
     h = size + 16

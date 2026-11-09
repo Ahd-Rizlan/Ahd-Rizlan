@@ -10,7 +10,7 @@ import urllib.request
 from html import escape
 from pathlib import Path
 
-from cartoon import save, BLUE, COMIC, INK, MONO, PINK, RED, THEMES, WHITE, YELLOW, burst, comic_text, shadow_box, style
+from cartoon import save, ODOMETER_CSS, odometer, BLUE, COMIC, INK, MONO, PINK, RED, THEMES, WHITE, YELLOW, burst, comic_text, shadow_box, style
 
 USER = os.environ.get("GITHUB_USER", "Ahd-Rizlan")
 TOKEN = os.environ["GITHUB_TOKEN"]
@@ -59,14 +59,14 @@ def stats_svg(mode, u):
         col = [RED, BLUE, YELLOW][i % 3]
         body.append(f'<circle cx="34" cy="{y - 6}" r="7" fill="{col}" stroke="{INK}" stroke-width="3"/>'
                     f'<text x="50" y="{y}" font-family="{MONO}" font-size="14" fill="{t["muted"]}">{label}</text>'
-                    f'<text x="268" y="{y + 1}" text-anchor="end" font-family="{COMIC}" font-size="24" letter-spacing="1" fill="{t["fg"]}">{val:,}</text>')
+                    + odometer(268, y + 1, val, 24, t["fg"], uid=i, delay=0.2 + i * 0.15))
     total = sum(v for _, v in rows[:3])
     return f'''<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" viewBox="0 0 {W} {H}" role="img" aria-label="GitHub stats: {", ".join(f"{l} {v}" for l, v in rows)}">
-{style()}
+{style(*ODOMETER_CSS)}
 {frame(t, "THE STATS", RED)}
 {"".join(body)}
 <g>{burst(362, 156, 82, points=14, fill=YELLOW, sw=5, seed=3)}</g>
-{comic_text(362, 164, f"{total:,}", 38, RED, anchor="middle", sw=6, off=0)}
+{odometer(362, 164, total, 38, RED, uid="t", anchor="middle", delay=0.5, stroke=INK)}
 <text x="362" y="188" text-anchor="middle" font-family="{COMIC}" font-size="15" letter-spacing="1" fill="{INK}">THIS YEAR</text>
 </svg>'''
 

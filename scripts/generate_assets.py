@@ -207,45 +207,15 @@ def avatar_uri(name):
     return f"data:{mime};base64,{base64.b64encode(data).decode()}"
 
 
-def team_card(mode, slug, title, role, desc, tags, current=False, short=""):
-    """Organization card: logo in a round comic frame, NOW! burst for the current job."""
-    t = THEMES[mode]
-    head = YELLOW if current else t["city"]
-    title_fill = RED if current else WHITE
-    lines = textwrap.wrap(desc, 44)[:3]
-    desc_svg = "".join(
-        f'<text x="28" y="{136 + i * 22}" font-family="{MONO}" font-size="14" fill="{t["muted"]}">{escape(l)}</text>'
-        for i, l in enumerate(lines))
-    tag_svg, x = [], 26
-    for i, tag in enumerate(tags):
-        p, pw = pill(x, 198, escape(tag.upper()), [YELLOW, WHITE, BLUE][i % 3], size=15, off=3)
-        tag_svg.append(p)
-        x += pw + 12
-    badge = (f'<g class="pulse">{burst(384, 46, 44, points=12, fill=RED, sw=4, wobble=0.1)}'
-             f'<text x="384" y="56" text-anchor="middle" font-family="{COMIC}" font-size="26" letter-spacing="1" fill="{WHITE}" '
-             f'stroke="{INK}" stroke-width="4" paint-order="stroke">NOW!</text></g>') if current else ""
-    css = style(".pulse { animation: pulse 1.4s ease-in-out infinite; transform-origin: 384px 46px; }",
-                "@keyframes pulse { 50% { transform: scale(1.12) rotate(6deg); } }", COMPACT) if current else style(COMPACT)
-    return f'''<svg xmlns="http://www.w3.org/2000/svg" width="440" height="270" viewBox="0 0 440 270" role="img" aria-label="{escape(title)}: {escape(role)}. {escape(desc)}">
-{css}
-<defs>
-  <clipPath id="c"><rect x="6" y="6" width="420" height="246" rx="22"/></clipPath>
-  <clipPath id="logo"><circle cx="62" cy="62" r="34"/></clipPath>
-</defs>
-{shadow_box(6, 6, 420, 246, t["panel"], r=22, off=9, sw=5)}
-<g clip-path="url(#c)"><rect x="6" y="6" width="420" height="86" fill="{head}"/></g>
-<line x1="6" y1="92" x2="426" y2="92" stroke="{INK}" stroke-width="5"/>
-<rect x="6" y="6" width="420" height="246" rx="22" fill="none" stroke="{INK}" stroke-width="5"/>
-<circle cx="66" cy="66" r="38" fill="{INK}"/>
-<circle cx="62" cy="62" r="38" fill="{WHITE}"/>
-<image href="{avatar_uri(slug)}" x="28" y="28" width="68" height="68" clip-path="url(#logo)" preserveAspectRatio="xMidYMid slice"/>
-<circle cx="62" cy="62" r="36" fill="none" stroke="{INK}" stroke-width="5"/>
-{comic_text(114, 58, escape(title.upper()), 34, title_fill, shadow=INK, off=4, sw=7)}
-<text class="full" x="116" y="80" font-family="{COMIC}" font-size="17" letter-spacing="1" fill="{INK if current else BLUE}">{escape(role.upper())}</text>
-<g class="full">{desc_svg}{"".join(tag_svg)}</g>
-<g class="compact">{big_lines(short, 28, 148, 38, 19, t["fg"])}
-<text x="28" y="234" font-family="{COMIC}" font-size="30" letter-spacing="1" fill="{YELLOW}" stroke="{INK}" stroke-width="5" paint-order="stroke">{escape(" · ".join(tags).upper())}</text></g>
-{badge}
+def org_badge(slug, title):
+    """Round comic badge holding just an organization's logo."""
+    return f'''<svg xmlns="http://www.w3.org/2000/svg" width="140" height="140" viewBox="0 0 140 140" role="img" aria-label="{escape(title)}">
+<defs><clipPath id="logo"><circle cx="64" cy="64" r="46"/></clipPath></defs>
+<circle cx="72" cy="72" r="58" fill="{INK}"/>
+<circle cx="64" cy="64" r="58" fill="{YELLOW}" stroke="{INK}" stroke-width="6"/>
+<circle cx="64" cy="64" r="49" fill="{WHITE}" stroke="{INK}" stroke-width="4"/>
+<image href="{avatar_uri(slug)}" x="18" y="18" width="92" height="92" clip-path="url(#logo)" preserveAspectRatio="xMidYMid slice"/>
+<circle cx="64" cy="64" r="47" fill="none" stroke="{INK}" stroke-width="4"/>
 </svg>'''
 
 
@@ -342,8 +312,9 @@ def main():
             save(OUT / "cards" / f"{issue}-{mode}.svg", card(mode, issue, title, desc, tags, status, short))
         for n, (question, answer, color, short) in enumerate(FACTS, 1):
             save(OUT / "facts" / f"{n:02}-{mode}.svg", fact_panel(mode, f"{n:02}", question, answer, color, short))
-        for slug, title, role, desc, tags, current, short in TEAMS:
-            save(OUT / "teams" / f"{slug}-{mode}.svg", team_card(mode, slug, title, role, desc, tags, current, short))
+
+    for slug, title, *_ in TEAMS:
+        save(OUT / "teams" / f"{slug}.svg", org_badge(slug, title))
     for i, (key, text) in enumerate(CAPTIONS.items()):
         save(OUT / "captions" / f"{key}.svg", caption(text, seed=i + 1))
     print(f"Wrote assets to {OUT}")
